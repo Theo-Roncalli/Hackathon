@@ -8,3 +8,4 @@ Data/*
 # Temporary Nextflow files
 Nextflow/Temp
 Nextflow/work
+Nextflow/.*
