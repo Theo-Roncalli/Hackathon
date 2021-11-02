@@ -1,0 +1,10 @@
+# Personnal notes
+*.txt
+Docs/notes.txt
+
+# Downloaded data
+Data/*
+
+# Temporary Nextflow files
+Nextflow/Temp
+Nextflow/work
