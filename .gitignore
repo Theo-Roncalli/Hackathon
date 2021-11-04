@@ -5,7 +5,20 @@ Docs/notes.txt
 # Downloaded data
 Data/*
 
+##### START Nextflow files #####
 # Temporary Nextflow files
 Nextflow/Temp
 Nextflow/work
 Nextflow/.*
+Nextflow/data
+
+/**/work
+/**/.nextflow
+/**/.nextflow.log*
+##### END Nextflow files #####
+
+
+##### START Editor files #####
+.vscode
+##### END Editor files #####
+
