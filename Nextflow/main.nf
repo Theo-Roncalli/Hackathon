@@ -21,39 +21,21 @@ process Fasterq {
     """
 }
 
-process Import {
-
-    tag "Scan of fasterq files"
-
-    input:
-    path params.fastq
-
-    output:
-    stdout
-
-    script:
-    """
-
-    """
-}
-
 workflow {
     if (params.fastq == null){
 //      idSRA = Channel.of("SRR628582", "SRR628583")
-        idSRA = Channel.fromList(params.idSRA).flatten()
+        idSRA = Channel.fromList(params.idSRA)
         fasterq_files = Fasterq(idSRA)
         fasterq_files.view()
         println fasterq_files.getClass()
         println fasterq_files
     }
     else if (params.fastq instanceof String){
-        fasterq_files = Import(params.fastq)
-/*        x = Channel.fromList([["/home/ubuntu/Documents/AMI2B/Hackathon/Projet/Nextflow/work/6c/5028f23ac1cb97bb5e679417ef1057/SRR15678351_1.fastq",
-        "/home/ubuntu/Documents/AMI2B/Hackathon/Projet/Nextflow/work/6c/5028f23ac1cb97bb5e679417ef1057/SRR15678351_2.fastq"],
-        ["/home/ubuntu/Documents/AMI2B/Hackathon/Projet/Nextflow/work/bd/064b3faf470aa8cdc4db2b0a2700c9/SRR15678351_1.fastq",
-        "/home/ubuntu/Documents/AMI2B/Hackathon/Projet/Nextflow/work/bd/064b3faf470aa8cdc4db2b0a2700c9/SRR15678351_2.fastq"]])
-        x.view()
-        println x.getClass()*/
+        fasterq_files = Channel.fromFilePairs("${params.fastq}/SRR*_{1,2}.fastq",checkIfExists:true)
+        fasterq_files.view()
     }
-
+    else {
+        throw new Exception("fastq parameter is not a string.")
+    }
 }
+
