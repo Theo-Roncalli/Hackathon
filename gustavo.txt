@@ -4,4 +4,4 @@ STAR --runThreadN 3 \
     --runMode genomeGenerate \
     --genomeDir genomeDir \
     --genomeFastaFiles hg19.fa
-    
+        

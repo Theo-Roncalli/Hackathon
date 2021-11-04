@@ -44,6 +44,6 @@ workflow {
     Fasterq(ids)
     println "Second Step , Creating index"
     MapThemAll()
-    println "Let's map it ! "
+    println "Let's map it ! "   
 
 }
