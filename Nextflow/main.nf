@@ -1,19 +1,19 @@
 nextflow.enable.dsl=2
 
-params.idSRA = ["SRR15678351","SRR15678351"]
+//params.idSRA = ["SRR15678351","SRR15678351"]
 params.fastq = null
 // params.idSRA = ["SRR628582", "SRR628583"]
-// params.idSRA = ['SRR628582', 'SRR628583', 'SRR628584', 'SRR628585', 'SRR628586', 'SRR628587', 'SRR628588', 'SRR628589']
+params.idSRA = ['SRR628582', 'SRR628583', 'SRR628584', 'SRR628585', 'SRR628586', 'SRR628587', 'SRR628588', 'SRR628589']
 
 process Fasterq {
 
     tag "Importation of ${idSRA}"
 
     input:
-    val idSRA
+        val idSRA
 
     output:
-    path "*_{1,2}.fastq"
+        path "*_{1,2}.fastq"
 
     script:
     """
@@ -26,10 +26,10 @@ process Import {
     tag "Scan of fasterq files"
 
     input:
-    path params.fastq
+        path params.fastq
 
     output:
-    stdout
+        stdout
 
     script:
     """
