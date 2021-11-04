@@ -1,6 +1,6 @@
 conda install STAR
 mkdir genomeDir
-STAR --runThreadN 3 \
+STAR --runThreadN 16 \
     --runMode genomeGenerate \
     --genomeDir genomeDir \
     --genomeFastaFiles hg19.fa
