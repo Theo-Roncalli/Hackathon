@@ -17,7 +17,7 @@ Nextflow/.*
 /**/*.fa
 /**/*.gtf
 /**/work
-genomeDir
+/**/genomeDir
 /**/data
 /**/alignments
 small_test_files
