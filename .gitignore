@@ -9,3 +9,15 @@ Data/*
 Nextflow/Temp
 Nextflow/work
 Nextflow/.*
+
+## New ignores
+# ignore temp nextflow files
+/**/.nextflow*
+# ignore data files
+/**/*.fa
+/**/*.gtf
+/**/work
+genomeDir
+/**/data
+/**/alignments
+small_test_files
