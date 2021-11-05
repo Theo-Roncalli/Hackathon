@@ -2,11 +2,6 @@
 
 nextflow.enable.dsl=2
 
-params.reads = null
-params.genome = null
-params.ids = ['SRR15678351','SRR15289297']
-params.ftp = "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.14_GRCh37.p13/GO_TO_CURRENT_VERSION/GCA_000001405.28_GRCh38.p13_genomic.fna.gz"
-// params.ids = ['SRR628582', 'SRR628583', 'SRR628584', 'SRR628585', 'SRR628586', 'SRR628587', 'SRR628588', 'SRR628589']
 
 process Fasterq {
 
