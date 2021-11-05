@@ -51,6 +51,7 @@ process Index {
 
     output:
         path "Index/"
+        
 
     script:
     """
@@ -60,37 +61,63 @@ process Index {
 
 workflow {
 
-    if (params.reads == null){
-        ids = Channel.fromList(params.ids)
-        fasterq_files = Fasterq(ids)
-//        fasterq_files.view()
-    }
-    else if (params.reads instanceof String){
-        fasterq_files = Channel.fromFilePairs("${params.reads}/SRR*_{1,2}.fastq",checkIfExists:true)
-//        fasterq_files.view()
-    }
-    else {
-        throw new Exception("The path for fastq files is not a string.")
-    }
+    // SEE EXPLANATION OF THE NEW PROGRAM STRUCTURE AFTER THE WORKFLOW
 
-    if (params.genome == null){
-        ftp = Channel.value(params.ftp)
-        genome_file = Genome(ftp)
-//        genome_file.view()
-    }
-    else if (params.genome instanceof String){
-        genome_file = Channel.fromPath("${params.genome}",checkIfExists:true)
-        genome_file.view()
-    }
-    else {
-        throw new Exception("The path for genome file is not a string.")
-    }
+// START getting entry files
+    ids = Channel.fromList(params.ids).ifEmpty(null)
+    fasterq_files = (
+        ids == null ?
+        Channel.fromFilePairs("${params.reads}/SRR*_{1,2}.fastq", checkIfExists:true)
+        : Fasterq(ids)
+    )
+    //fasterq_files.view()
+// END getting entry files
 
-    //Index(genome_file)
-    //path_index = Index(genome_file)
+// START getting genome
+    ftp = Channel.value(params.ftp).ifEmpty(null)
+    genome_file = (
+        ftp == null ?
+        Channel.fromPath("${params.genome}", checkIfExists:true)
+        : Genome(ftp)
+    )
+    //genome_file.view()
+// END getting genome
+
+// START creating genome index
+    path_index = Index(genome_file)
     //path_index.view()
+// END creating genome index
 
 }
+
+// NEW PROGRAM STRUCTURE
+/*
+    Instead of a series of if statements (imperative programming)
+    to build the parameters, channels are built with the ternary 
+    operation which allows yielding two different values based on a condition.
+
+    The reformulation is as follows
+
+    Original :
+        if some_condition:
+            x = 5
+        else:
+            x = 6
+
+    Explicit ternary operator (valid Python, try it for yourself):
+        x = 5 if some_condition else 6
+
+    C-style (valid in Groovy) ternary operator
+        x = some_condition ? 5 : 6
+    
+    It's basically asking a question, with the convention that the first 
+    value after the question mark is the "yes" and the second (after the colon :)
+    is "no".
+
+*/
+
+
+// MANUAL TESTING COMMANDS HISTORY :
 
 // docker pull combinelab/salmon
 // wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.transcripts.fa.gz
