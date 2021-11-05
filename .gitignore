@@ -21,3 +21,5 @@ genomeDir
 /**/data
 /**/alignments
 small_test_files
+# dotfiles (used to create the workflow dag)
+/**/*.dot
