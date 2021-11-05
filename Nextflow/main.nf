@@ -44,16 +44,17 @@ process Genome {
 process Index {
 
     tag "Creation of the index"
+    //conda "STAR"
 
     input:
-    path genome_file
+        path genome_file
 
     output:
-    path "*/Index"
+        path "Index/"
 
     script:
     """
-    STAR --runThreadN 6 --runMode genomeGenerate –genomeDir Index --genomeFastaFiles ${genome_file}
+    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate –genomeDir Index --genomeFastaFiles ${genome_file}
     """
 }
 
@@ -85,7 +86,9 @@ workflow {
         throw new Exception("The path for genome file is not a string.")
     }
 
-    Index(genome_file)
+    //Index(genome_file)
+    //path_index = Index(genome_file)
+    //path_index.view()
 
 }
 
