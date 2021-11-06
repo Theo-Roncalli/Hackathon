@@ -148,12 +148,12 @@ process Index {
         path genome_file
 
     output:
-        path "Index/"
+        path "${workDir}"
         
 
     script:
     """
-    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate –genomeDir Index --genomeFastaFiles ${genome_file}
+    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate --genomeFastaFiles ${genome_file}
     """
 }
 
@@ -169,21 +169,21 @@ workflow {
     // SEE EXPLANATION OF THE NEW PROGRAM STRUCTURE AFTER THE WORKFLOW
 
 // START getting entry files
-    ids = Channel.fromList(params.ids).ifEmpty(null)
+    ids = Channel.fromList(params.ids)
     fasterq_files = (
-        ids == null ?
-        Channel.fromFilePairs("${params.reads}/SRR*_{1,2}.fastq", checkIfExists:true)
-        : Fasterq(ids)
+        params.reads == null ?
+        Fasterq(ids) :
+        Channel.fromFilePairs("${params.reads}/SRR*_{1,2}.fastq*", checkIfExists:true)
     )
     //fasterq_files.view()
 // END getting entry files
 
 // START getting genome
-    ftp = Channel.value(params.ftp).ifEmpty(null)
+    ftp = Channel.value(params.ftp)
     genome_file = (
-        ftp == null ?
+        params.genome == null ?
+        Genome(ftp) :
         Channel.fromPath("${params.genome}", checkIfExists:true)
-        : Genome(ftp)
     )
     //genome_file.view()
 // END getting genome
