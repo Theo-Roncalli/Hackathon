@@ -1,0 +1,28 @@
+# Personnal notes
+*.txt
+Docs/notes.txt
+
+# Downloaded data
+/**/*.fastq
+
+# Temporary Nextflow files
+Nextflow/Temp
+Nextflow/work
+Nextflow/.*
+
+## New ignores
+# ignore temp nextflow files
+/**/.nextflow*
+# ignore data files
+/**/*.fa
+/**/*.gtf
+/**/work
+genomeDir
+/**/data
+/**/alignments
+small_test_files
+# dotfiles (used to create the workflow dag)
+/**/*.dot
+
+# drafts
+truc_ultime.bash
