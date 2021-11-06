@@ -1,3 +1,5 @@
+// nextflow run main.nf --reads ../Data/Reads
+
 /*
     Nexflow pipeline to perform a full RNA-seq analysis (differential expression)
     from a series of SRA accession numbers and a reference genome.
@@ -56,7 +58,6 @@
     ######################################################################
 */
 
-
 // nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome/GRCh38.primary_assembly.genome.fa
 nextflow.enable.dsl=2
 
@@ -98,27 +99,28 @@ process Genome {
 
     arguments:
     ---------
-        ftp: url pointing to the desired reference genome
+        url: url pointing to the desired reference genome
 
     output:
     ------
         A path (glob), of all the uncompressed parts of the genome.
     */
-    tag "Importation of ${ftp}"
+    tag "Importation of ${url}"
 
     input:
-        val ftp
+        val url
 
     output:
-        path "*.fna"
+        path "*.f*a"
         // DISCUSSION :
         // gunzip expands the patterns `*.fna.gz` and `*fa.gz`
         // shouldn't this wildcard be the same ?
 
     script:
     """
-    wget ${ftp}
-    gunzip *.f*a.gz
+    #!/usr/bin/env bash
+    wget ${url}
+    [[ ${url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
     """
 }
 
@@ -148,12 +150,11 @@ process Index {
         path genome_file
 
     output:
-        path "${workDir}"
-        
-
+        path "Index"
+    
     script:
     """
-    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate --genomeFastaFiles ${genome_file}
+    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate –genomeDir Index --genomeFastaFiles ${genome_file}
     """
 }
 
@@ -179,10 +180,10 @@ workflow {
 // END getting entry files
 
 // START getting genome
-    ftp = Channel.value(params.ftp)
+    url = Channel.value(params.url)
     genome_file = (
         params.genome == null ?
-        Genome(ftp) :
+        Genome(url) :
         Channel.fromPath("${params.genome}", checkIfExists:true)
     )
     //genome_file.view()
