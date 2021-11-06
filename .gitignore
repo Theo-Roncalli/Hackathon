@@ -23,3 +23,6 @@ genomeDir
 small_test_files
 # dotfiles (used to create the workflow dag)
 /**/*.dot
+
+# drafts
+truc_ultime.bash
