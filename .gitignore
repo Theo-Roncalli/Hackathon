@@ -7,6 +7,9 @@ Docs/notes.txt
 # Downloaded data
 /**/*.fastq
 
+# Processed data (genome Index)
+Data/Index
+
 # Temporary Nextflow files
 Nextflow/Temp
 Nextflow/work
@@ -36,6 +39,10 @@ truc_ultime.bash
 
 # site (documentation)
 site
+
+# manual logs
+/**/*log*
+/**/*manual*
 
 ################### R ignores ####################### 
 .Rproj.user
