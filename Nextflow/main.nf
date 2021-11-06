@@ -1,4 +1,4 @@
-// nextflow run main.nf --reads ../Data/Reads
+// nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa
 
 /*
     Nexflow pipeline to perform a full RNA-seq analysis (differential expression)
@@ -145,16 +145,15 @@ process Index {
 
     tag "Creation of the index"
 
-    // TODO : change hardcoded "Index" to a param.index_dir
     input:
         path genome_file
 
     output:
-        path "Index"
+        path "GenomeDir"
     
     script:
     """
-    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate –genomeDir Index --genomeFastaFiles ${genome_file}
+    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate --genomeFastaFiles ${genome_file}
     """
 }
 
@@ -191,7 +190,7 @@ workflow {
 
 // START creating genome index
     path_index = Index(genome_file)
-    //path_index.view()
+    path_index.view()
 // END creating genome index
 
 }
