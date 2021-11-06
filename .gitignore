@@ -3,7 +3,7 @@
 Docs/notes.txt
 
 # Downloaded data
-Data/*
+/**/*.fastq
 
 # Temporary Nextflow files
 Nextflow/Temp
