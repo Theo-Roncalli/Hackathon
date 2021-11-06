@@ -32,6 +32,8 @@ small_test_files
 # drafts
 truc_ultime.bash
 
+# reference (cheatsheets)
+md_ref.md
 
 ################### R ignores ####################### 
 .Rproj.user
