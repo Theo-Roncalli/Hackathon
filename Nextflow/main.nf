@@ -162,13 +162,15 @@ process Index {
     tag "Creation of the index"
 
     input:
-        genomePath
+        value(genomePath)
 
     output:
         path "GenomeDir"
     
     script:
+    println genomePath.getClass()
     def genome_path = path("${genomePath}/*.f*a")
+    println genome_path.getClass()
     def annotation_path = path("${genomePath}/*.gtf")
     """
     STAR --runThreadN ${params.index_cpus}\
