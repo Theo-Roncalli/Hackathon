@@ -162,14 +162,12 @@ process Index {
     tag "Creation of the index"
 
     input:
-        value(genomePath)
+        tuple path(genome_path), path(annotation_path)
 
     output:
-        path "GenomeDir"
+        path("GenomeDir")
     
     script:
-    genome_path = Channel.fromPath("${genomePath}/*.f*a")
-    annotation_path = Channel.fromPath("${genomePath}/*.gtf")
     """
     STAR --runThreadN ${params.index_cpus}\
          --runMode genomeGenerate\
@@ -214,7 +212,7 @@ workflow {
     genome_path = (
         params.genome == null ?
         Genome(params.genome_url, params.annotation_url) :
-        Channel.fromPath("${params.genome}", checkIfExists:true)
+        Channel.fromFilePairs("${params.genome}/*.{fa,gtf}", checkIfExists:true)
     )
     genome_path.view()
 
