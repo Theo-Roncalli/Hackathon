@@ -189,7 +189,7 @@ workflow {
     genome_tuple = (
         params.genome == null ?
         Genome(url_tuple) :
-        Channel.fromPath("${params.genome}", checkIfExists:true)
+        Channel.fromFilePairs("${params.genome}/*{fa,gtf}", checkIfExists:true)
     )
     //genome_file.view()
 
