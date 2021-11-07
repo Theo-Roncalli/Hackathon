@@ -67,7 +67,7 @@ log.info """\
 D I F F R N A - N F  v0.1.0 
 ===========================
 genome       : $params.genome_url
-annotations  : $params.annoration_url
+annotations  : $params.annotation_url
 reads        : $params.ids
 readlength-1 : $params.sjdbOverhang
 """
