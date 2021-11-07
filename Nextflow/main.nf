@@ -184,7 +184,8 @@ workflow {
     //fasterq_files.view()
 
     // Retrieve genome and annotations
-    url_tuple = Channel.value(params.genome_url), Channel.value(params.annotation_url)
+    //url_tuple = new Tuple(params.genome_url, Channel.value(params.annotation_url))
+    url_tuple = new Tuple(params.genome_url, params.annotation_url)
     genome_tuple = (
         params.genome == null ?
         Genome(url_tuple) :
