@@ -108,10 +108,10 @@ process Genome {
     tag "Importation of ${url}"
 
     input:
-        val url
+        tuple val(genome_url), val(annotation_url)
 
     output:
-        path "*.f*a"
+        tuple path("*.f*a"), path("*.gtf")
         // DISCUSSION :
         // gunzip expands the patterns `*.fna.gz` and `*fa.gz`
         // shouldn't this wildcard be the same ?
@@ -119,8 +119,10 @@ process Genome {
     script:
     """
     #!/usr/bin/env bash
-    wget ${url}
-    [[ ${url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
+    wget ${genome_url}
+    [[ ${genome_url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
+    wget ${annotation_url}
+    [[ ${annotation_url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
     """
 }
 
@@ -146,14 +148,18 @@ process Index {
     tag "Creation of the index"
 
     input:
-        path genome_file
+        tuple path(genome_path), path(annotation_path)
 
     output:
         path "GenomeDir"
     
     script:
     """
-    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate --genomeFastaFiles ${genome_file}
+    STAR --runThreadN ${params.index_cpus}\
+         --runMode genomeGenerate\
+         --genomeFastaFiles ${genome_path}\
+         --sjdGTFfile ${annotation_path}\
+         --sjdbOverhang ${params.sjdbOverhang}
     """
 }
 
@@ -168,34 +174,31 @@ workflow {
 
     // SEE EXPLANATION OF THE NEW PROGRAM STRUCTURE AFTER THE WORKFLOW
 
-// START getting entry files
+    // Retrieve RNA-seq data (fastq files / SRA accession numbers)
     ids = Channel.fromList(params.ids)
     fasterq_files = (
         params.reads == null ?
         Fasterq(ids) :
         Channel.fromFilePairs("${params.reads}/SRR*_{1,2}.fastq*", checkIfExists:true)
     )
-    fasterq_files.view()
-// END getting entry files
+    //fasterq_files.view()
 
-// START getting genome
+    // Retrieve genome and annotations
     url = Channel.value(params.url)
-    genome_file = (
+    genome_tuple = (
         params.genome == null ?
         Genome(url) :
         Channel.fromPath("${params.genome}", checkIfExists:true)
     )
     //genome_file.view()
-// END getting genome
 
-// START creating genome index
+    // Create genome index
     path_index = (
         params.index == null ?
-        Index(genome_file) :
+        Index(genome_tuple) :
         Channel.fromPath("${params.index}", checkIfExists:true)
     )
-    //path_index.view()
-// END creating genome index
+    path_index.view()
 
 }
 
