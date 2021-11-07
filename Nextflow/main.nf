@@ -182,6 +182,15 @@ process Index {
     // TODO : write the process specification.
 // }
 
+def genome_and_annotations_from_dir(dir_path) {
+    genome_dir = new File(dir_path)
+    if (genome_dir.exists()) {
+		return new Tuple("${dir_path}/*.f*a", "${dir_path}/*.gtf")
+    } else {
+        throw new Exception("path ${dir_path} does not exist")
+    }
+}
+
 workflow {
 
     // SEE EXPLANATION OF THE NEW PROGRAM STRUCTURE AFTER THE WORKFLOW
@@ -198,17 +207,12 @@ workflow {
     // Retrieve genome and annotations
     //url_tuple = new Tuple(params.genome_url, Channel.value(params.annotation_url))
     url_tuple = new Tuple(params.genome_url, params.annotation_url)
-    genome_dir = new File("${params.genome}")
     genome_tuple = (
         params.genome == null ?
         Genome(url_tuple) :
-        (
-            genome_dir.exists() ?
-		    new Tuple("${params.genome}/*.f*a", "${params.genome}/*.gtf") :
-            throw new Exception("path ${params.genome} does not exist")
-        )
+        genome_and_annotations_from_dir(params.genome)
     )
-    //genome_tuple.view()
+    genome_tuple.view()
 
     // Create genome index
     path_index = (
