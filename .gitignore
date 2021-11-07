@@ -8,7 +8,7 @@ Docs/notes.txt
 /**/*.fastq
 
 # Processed data (genome Index)
-Data/Index
+/**/Data
 
 # Temporary Nextflow files
 Nextflow/Temp
