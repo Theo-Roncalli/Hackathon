@@ -159,7 +159,7 @@ process Index {
     STAR --runThreadN ${params.index_cpus}\
          --runMode genomeGenerate\
          --genomeFastaFiles ${genome_path}\
-         --sjdGTFfile ${annotation_path}\
+         --sjdbGTFfile ${annotation_path}\
          --sjdbOverhang ${params.sjdbOverhang}
     """
 }
