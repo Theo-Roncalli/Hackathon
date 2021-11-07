@@ -1,0 +1,21 @@
+STAR  --genomeDir genomeDir \
+      --readFilesIn path/to/SRR798372_1.fastq.gz path/to/SRR798372_2.fastq.gz \
+      --readFilesCommand zcat \
+      --outSAMtype BAM Unsorted SortedByCoordinate \
+      --quantMode GeneCounts \
+      --outFileNamePrefix alignments/SRR798372
+      
+
+--readFilesCommand zcat : on utilise cette option si on met en input des fichiers compréssés .gz
+
+--outSAMtype : spécifie la sortie du fichier d'alignement , ici on dit qu'on veut les classer selon les coordonnée du génome ça donne un fichier Aligned.sortedByCoord.out.bam 
+
+mais on peut aussi mettre BAM Unsorted à la place de BAM SortedByCoordinate
+
+
+--outFileNamePrefix : si on précise pas un dossier , STAR met tous les fichiers outputs dans le repertoire courant. 
+
+
+      
+      
+
