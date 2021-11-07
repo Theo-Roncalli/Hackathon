@@ -213,7 +213,9 @@ workflow {
         genome_and_annotations_from_dir(params.genome)
     )
     //genome_tuple.view()
+    println url_tuple.getClass()
     println genome_tuple.getClass()
+    println genome_and_annotations_from_dir.getClass()
 
     // Create genome index
     //path_index = (
