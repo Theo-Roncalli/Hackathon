@@ -198,15 +198,17 @@ workflow {
     // Retrieve genome and annotations
     //url_tuple = new Tuple(params.genome_url, Channel.value(params.annotation_url))
     url_tuple = new Tuple(params.genome_url, params.annotation_url)
+    genome_dir = new File("${params.genome}")
     genome_tuple = (
         params.genome == null ?
         Genome(url_tuple) :
-        new Tuple(
-            Channel.fromPath("${params.genome}/*.f*a", checkIfExists:true),
-            Channel.fromPath("${params.genome}/*.gtf", checkIfExists:true)
+        (
+            genome_dir.exists() ?
+		    new Tuple("${params.genome}/*.f*a", "${params.genome}/*.gtf") :
+            throw new Exception("path ${params.genome} does not exist")
         )
     )
-    //genome_file.view()
+    //genome_tuple.view()
 
     // Create genome index
     path_index = (
