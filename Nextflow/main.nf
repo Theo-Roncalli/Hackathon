@@ -1,4 +1,3 @@
-// time nextflow -log index_with_annotations.log run main.nf --reads Data/Reads/
 // nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa
 
 /*
@@ -61,17 +60,6 @@
 
 // nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome/GRCh38.primary_assembly.genome.fa
 nextflow.enable.dsl=2
-
-// I called it DIFF RNA for Differential RNA analysis
-log.info """\
-D I F F R N A - N F  v0.1.0 
-===========================
-genome       : $params.genome_url
-annotations  : $params.annotation_url
-reads        : $params.ids
-readlength-1 : $params.sjdbOverhang
-"""
-
 
 process Fasterq {
     /*
@@ -170,7 +158,7 @@ process Index {
     STAR --runThreadN ${params.index_cpus}\
          --runMode genomeGenerate\
          --genomeFastaFiles ${genome_path}\
-         --sjdbGTFfile ${annotation_path}\
+         --sjdGTFfile ${annotation_path}\
          --sjdbOverhang ${params.sjdbOverhang}
     """
 }
@@ -201,7 +189,7 @@ workflow {
     genome_tuple = (
         params.genome == null ?
         Genome(url_tuple) :
-        Channel.fromFilePairs("${params.genome}/*.{fa,gtf}", checkIfExists:true)
+        Channel.fromPath("${params.genome}", checkIfExists:true)
     )
     //genome_file.view()
 
@@ -214,6 +202,32 @@ workflow {
     path_index.view()
 
 }
+
+// NEW PROGRAM STRUCTURE
+/*
+    Instead of a series of if statements (imperative programming)
+    to build the parameters, channels are built with the ternary 
+    operation which allows yielding two different values based on a condition.
+
+    The reformulation is as follows
+
+    Original :
+        if some_condition:
+            x = 5
+        else:
+            x = 6
+
+    Explicit ternary operator (valid Python, try it for yourself):
+        x = 5 if some_condition else 6
+
+    C-style (valid in Groovy) ternary operator
+        x = some_condition ? 5 : 6
+    
+    It's basically asking a question, with the convention that the first 
+    value after the question mark is the "yes" and the second (after the colon :)
+    is "no".
+
+*/
 
 
 // MANUAL TESTING COMMANDS HISTORY :
