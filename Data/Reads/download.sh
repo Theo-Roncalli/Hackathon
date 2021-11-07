@@ -3,5 +3,3 @@
 while read line; do
   fasterq-dump "$line"
 done <ids.txt
-
-
