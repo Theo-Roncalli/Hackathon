@@ -149,12 +149,11 @@ process Index {
         path genome_file
 
     output:
-        path "Index"
+        path "GenomeDir"
     
     script:
     """
-    mkdir Index
-    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate --GenomeDir Index --genomeFastaFiles ${genome_file}
+    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate --genomeFastaFiles ${genome_file}
     """
 }
 
@@ -176,7 +175,7 @@ workflow {
         Fasterq(ids) :
         Channel.fromFilePairs("${params.reads}/SRR*_{1,2}.fastq*", checkIfExists:true)
     )
-    //fasterq_files.view()
+    fasterq_files.view()
 // END getting entry files
 
 // START getting genome
