@@ -168,10 +168,8 @@ process Index {
         path "GenomeDir"
     
     script:
-    println genomePath.getClass()
-    def genome_path = path("${genomePath}/*.f*a")
-    println genome_path.getClass()
-    def annotation_path = path("${genomePath}/*.gtf")
+    genome_path = Channel.fromPath("${genomePath}/*.f*a")
+    annotation_path = Channel.fromPath("${genomePath}/*.gtf")
     """
     STAR --runThreadN ${params.index_cpus}\
          --runMode genomeGenerate\
