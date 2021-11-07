@@ -149,11 +149,12 @@ process Index {
         path genome_file
 
     output:
-        path "GenomeDir"
+        path "Index"
     
     script:
     """
-    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate --genomeFastaFiles ${genome_file}
+    mkdir Index
+    STAR --runThreadN ${params.index_cpus} --runMode genomeGenerate --GenomeDir Index --genomeFastaFiles ${genome_file}
     """
 }
 
