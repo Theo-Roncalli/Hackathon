@@ -120,10 +120,11 @@ process Genome {
     tag "Retreiving genome: ${genome_url}, annotation: ${annotation_url}"
 
     input:
-        tuple val(genome_url), val(annotation_url)
+        val(genome_url)
+        val(annotation_url)
 
     output:
-        tuple path("*.f*a"), path("*.gtf")
+        path("genome_dir")
         // DISCUSSION :
         // gunzip expands the patterns `*.fna.gz` and `*fa.gz`
         // shouldn't this wildcard be the same ?
@@ -131,6 +132,7 @@ process Genome {
     script:
     """
     #!/usr/bin/env bash
+    mkdir genome_dir && cd genome_dir || exit 1
     wget ${genome_url}
     [[ ${genome_url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
     wget ${annotation_url}
@@ -160,12 +162,14 @@ process Index {
     tag "Creation of the index"
 
     input:
-        tuple path(genome_path), path(annotation_path)
+        genomePath
 
     output:
         path "GenomeDir"
     
     script:
+    def genome_path = path("${genomePath}/*.f*a")
+    def annotation_path = path("${genomePath}/*.gtf")
     """
     STAR --runThreadN ${params.index_cpus}\
          --runMode genomeGenerate\
@@ -206,21 +210,18 @@ workflow {
 
     // Retrieve genome and annotations
     //url_tuple = new Tuple(params.genome_url, Channel.value(params.annotation_url))
-    url_tuple = new Tuple(params.genome_url, params.annotation_url)
-    genome_tuple = (
+    //url_tuple = new Tuple(params.genome_url, params.annotation_url)
+    genome_path = (
         params.genome == null ?
-        Genome(url_tuple) :
-        genome_and_annotations_from_dir(params.genome)
+        Genome(params.genome_url, params.annotation_url) :
+        Channel.fromPath("${params.genome}", checkIfExists:true)
     )
-    //genome_tuple.view()
-    println url_tuple.getClass()
-    println genome_tuple.getClass()
-    println genome_and_annotations_from_dir.getClass()
+    genome_path.view()
 
     // Create genome index
     path_index = (
         params.index == null ?
-        Index(genome_tuple) :
+        Index(genome_path) :
         Channel.fromPath("${params.index}", checkIfExists:true)
     )
     path_index.view()
