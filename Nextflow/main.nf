@@ -1,3 +1,4 @@
+// time nextflow -log index_with_annotations.log run main.nf --reads Data/Reads/
 // nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa
 
 /*
@@ -202,32 +203,6 @@ workflow {
     path_index.view()
 
 }
-
-// NEW PROGRAM STRUCTURE
-/*
-    Instead of a series of if statements (imperative programming)
-    to build the parameters, channels are built with the ternary 
-    operation which allows yielding two different values based on a condition.
-
-    The reformulation is as follows
-
-    Original :
-        if some_condition:
-            x = 5
-        else:
-            x = 6
-
-    Explicit ternary operator (valid Python, try it for yourself):
-        x = 5 if some_condition else 6
-
-    C-style (valid in Groovy) ternary operator
-        x = some_condition ? 5 : 6
-    
-    It's basically asking a question, with the convention that the first 
-    value after the question mark is the "yes" and the second (after the colon :)
-    is "no".
-
-*/
 
 
 // MANUAL TESTING COMMANDS HISTORY :
