@@ -62,6 +62,16 @@
 // nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome/GRCh38.primary_assembly.genome.fa
 nextflow.enable.dsl=2
 
+log.info """\
+bio-TAGI Diff. RNA-Seq - N F  v0.1.0 
+====================================
+genome       : $params.genome_url
+annotations  : $params.annoration_url
+reads        : $params.ids
+readlength-1 : $params.sjdbOverhang
+"""
+
+
 process Fasterq {
     /*
     Use ncbi sra-tools' fasterq-dump to rapdily retrieve
