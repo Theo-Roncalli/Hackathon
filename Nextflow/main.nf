@@ -189,17 +189,12 @@ workflow {
 // END getting genome
 
 // START creating genome index
-<<<<<<< HEAD
-    path_index = Index(genome_file)
-    path_index.view()
-=======
     path_index = (
         params.index == null ?
         Index(genome_file) :
-        Channel.fromPath("${params.genome}", checkIfExists:true)
+        Channel.fromPath("${params.index}", checkIfExists:true)
     )
     //path_index.view()
->>>>>>> 571e24f965058b0f34cb57a9a336438e7ba4c8ac
 // END creating genome index
 
 }
