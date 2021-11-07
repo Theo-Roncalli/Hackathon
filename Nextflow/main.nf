@@ -212,15 +212,16 @@ workflow {
         Genome(url_tuple) :
         genome_and_annotations_from_dir(params.genome)
     )
-    genome_tuple.view()
+    //genome_tuple.view()
+    println genome_tuple.getClass()
 
     // Create genome index
-    path_index = (
-        params.index == null ?
-        Index(genome_tuple) :
-        Channel.fromPath("${params.index}", checkIfExists:true)
-    )
-    path_index.view()
+    //path_index = (
+    //    params.index == null ?
+    //    Index(genome_tuple) :
+    //    Channel.fromPath("${params.index}", checkIfExists:true)
+    //)
+    //path_index.view()
 
 }
 
