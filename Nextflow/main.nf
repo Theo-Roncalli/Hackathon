@@ -124,7 +124,7 @@ process Genome {
         val(annotation_url)
 
     output:
-        path("genome_dir")
+        tuple path("*.fa"), path("*.gtf")
         // DISCUSSION :
         // gunzip expands the patterns `*.fna.gz` and `*fa.gz`
         // shouldn't this wildcard be the same ?
@@ -132,7 +132,6 @@ process Genome {
     script:
     """
     #!/usr/bin/env bash
-    mkdir genome_dir && cd genome_dir || exit 1
     wget ${genome_url}
     [[ ${genome_url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
     wget ${annotation_url}
