@@ -62,9 +62,10 @@
 // nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome/GRCh38.primary_assembly.genome.fa
 nextflow.enable.dsl=2
 
+// I called it DIFF RNA for Differential RNA analysis
 log.info """\
-bio-TAGI Diff. RNA-Seq - N F  v0.1.0 
-====================================
+D I F F R N A - N F  v0.1.0 
+===========================
 genome       : $params.genome_url
 annotations  : $params.annoration_url
 reads        : $params.ids
