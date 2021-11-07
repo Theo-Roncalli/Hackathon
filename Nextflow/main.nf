@@ -105,7 +105,7 @@ process Genome {
     ------
         A path (glob), of all the uncompressed parts of the genome.
     */
-    tag "Importation of ${url}"
+    tag "Retreiving genome: ${genome_url}, annotation: ${annotation_url}"
 
     input:
         tuple val(genome_url), val(annotation_url)
