@@ -61,6 +61,18 @@
 // nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome/GRCh38.primary_assembly.genome.fa
 nextflow.enable.dsl=2
 
+log.info """\
+D I F F R N A - N F  v0.1.0 
+===========================
+genome_url       :  $params.genome_url
+annotations_url  :  $params.annotation_url
+SRA ids          :  $params.ids
+readlength-1     :  $params.sjdbOverhang
+reads_dir        :  $params.reads
+genome_dir       :  $params.genome
+index_dir        :  $params.index
+"""
+
 process Fasterq {
     /*
     Use ncbi sra-tools' fasterq-dump to rapdily retrieve
@@ -158,7 +170,7 @@ process Index {
     STAR --runThreadN ${params.index_cpus}\
          --runMode genomeGenerate\
          --genomeFastaFiles ${genome_path}\
-         --sjdGTFfile ${annotation_path}\
+         --sjdbGTFfile ${annotation_path}\
          --sjdbOverhang ${params.sjdbOverhang}
     """
 }
@@ -185,21 +197,34 @@ workflow {
 
     // Retrieve genome and annotations
     //url_tuple = new Tuple(params.genome_url, Channel.value(params.annotation_url))
+
+    //x = Channel.of([1, 2, 3])
+    ////x.view()
+    ////y.view()
+    //println "Filtro"
+    //println aber
+
+    y = Channel.fromPath("${params.genome}/*", checkIfExists:true)
+    a = y.filter{ it.toString().endsWith(".fa")  }.first()
+    b = y.filter{ it.toString().endsWith(".gtf")  }.first()
+    println a.toString()
+    b.view()
     url_tuple = new Tuple(params.genome_url, params.annotation_url)
-    genome_tuple = (
-        params.genome == null ?
-        Genome(url_tuple) :
-        Channel.fromFilePairs("${params.genome}/*{fa,gtf}", checkIfExists:true)
-    )
-    //genome_file.view()
+    genome_dir_tuple = new Tuple(a, b)
+    //genome_tuple = (
+    //    params.genome == null ? 1 : 2
+    //    //Genome(url_tuple) :
+    //    //genome_dir_tuple
+    //)
+    //genome_tuple.view()
 
     // Create genome index
-    path_index = (
-        params.index == null ?
-        Index(genome_tuple) :
-        Channel.fromPath("${params.index}", checkIfExists:true)
-    )
-    path_index.view()
+    //path_index = (
+    //    params.index == null ?
+    //    Index(genome_tuple) :
+    //    Channel.fromPath("${params.index}", checkIfExists:true)
+    //)
+    //path_index.view()
 
 }
 
