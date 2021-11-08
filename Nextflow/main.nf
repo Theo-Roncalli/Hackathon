@@ -120,10 +120,12 @@ process Genome {
     tag "Retreiving genome: ${genome_url}, annotation: ${annotation_url}"
 
     input:
-        tuple val(genome_url), val(annotation_url)
+        val genome_url
+        val annotation_url
 
     output:
-        tuple path("*.f*a"), path("*.gtf")
+        path "*.f*a"
+        path "*.gtf"
         // DISCUSSION :
         // gunzip expands the patterns `*.fna.gz` and `*fa.gz`
         // shouldn't this wildcard be the same ?
@@ -160,7 +162,8 @@ process Index {
     tag "Creation of the index"
 
     input:
-        tuple path(genome_path), path(annotation_path)
+        path genome_path
+        path annotation_path
 
     output:
         path "GenomeDir"
@@ -197,34 +200,27 @@ workflow {
 
     // Retrieve genome and annotations
     //url_tuple = new Tuple(params.genome_url, Channel.value(params.annotation_url))
+    
+    //genome_dir_tuple = new Tuple(a, b)
+    //url_tuple = new Tuple(params.genome_url, params.annotation_url)
+    if (params.genome == null) {
+    	Genome(params.genome_url, params.annotation_url)
+    } else {
+    	 path_genome = Channel.fromPath("${params.genome}/*.fa", checkIfExists: true)
+    	 path_annotation = Channel.fromPath("${params.genome}/*.gtf", checkIfExists: true)
+    }
+    path_genome.view()
+    path_annotation.view()
 
-    //x = Channel.of([1, 2, 3])
-    ////x.view()
-    ////y.view()
-    //println "Filtro"
-    //println aber
-
-    y = Channel.fromPath("${params.genome}/*", checkIfExists:true)
-    a = y.filter{ it.toString().endsWith(".fa")  }.first()
-    b = y.filter{ it.toString().endsWith(".gtf")  }.first()
-    println a.toString()
-    b.view()
-    url_tuple = new Tuple(params.genome_url, params.annotation_url)
-    genome_dir_tuple = new Tuple(a, b)
-    //genome_tuple = (
-    //    params.genome == null ? 1 : 2
-    //    //Genome(url_tuple) :
-    //    //genome_dir_tuple
-    //)
-    //genome_tuple.view()
-
+/*
     // Create genome index
-    //path_index = (
-    //    params.index == null ?
-    //    Index(genome_tuple) :
-    //    Channel.fromPath("${params.index}", checkIfExists:true)
-    //)
-    //path_index.view()
+    path_index = (
+        params.index == null ?
+        Index(genome_tuple) :
+        Channel.fromPath("${params.index}", checkIfExists:true)
+    )
+    path_index.view()
+*/
 
 }
 
