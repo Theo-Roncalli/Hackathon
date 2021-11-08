@@ -206,9 +206,9 @@ workflow {
     //genome_dir_tuple = new Tuple(a, b)
     //url_tuple = new Tuple(params.genome_url, params.annotation_url)
     if (params.genome == null) {
-    	genome_ch = Genome(params.genome_url, params.annotation_url)
-        path_genome = genome_ch[0]
-        path_annotation = genome_ch[1]
+    	Genome(params.genome_url, params.annotation_url)
+        path_genome = Genome.out[0]
+        path_annotation = Genome.out[1]
     } else {
     	Channel
             .fromPath("${params.genome}/*.fa", checkIfExists: true)
@@ -231,43 +231,3 @@ workflow {
 */
 
 }
-
-// NEW PROGRAM STRUCTURE
-/*
-    Instead of a series of if statements (imperative programming)
-    to build the parameters, channels are built with the ternary 
-    operation which allows yielding two different values based on a condition.
-
-    The reformulation is as follows
-
-    Original :
-        if some_condition:
-            x = 5
-        else:
-            x = 6
-
-    Explicit ternary operator (valid Python, try it for yourself):
-        x = 5 if some_condition else 6
-
-    C-style (valid in Groovy) ternary operator
-        x = some_condition ? 5 : 6
-    
-    It's basically asking a question, with the convention that the first 
-    value after the question mark is the "yes" and the second (after the colon :)
-    is "no".
-
-*/
-
-
-// MANUAL TESTING COMMANDS HISTORY :
-
-// docker pull combinelab/salmon
-// wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.transcripts.fa.gz
-// wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/GRCh38.primary_assembly.genome.fa.gz
-// cat gencode.v29.transcripts.fa.gz GRCh38.primary_assembly.genome.fa.gz > gentrome.fa.gz
-// salmon index -t gentrome.fa.gz --decoys GRCh38.primary_assembly.genome.fa.gz -p 12 -i salmon_index --gencode
-
-// gunzip *.f*a.gz
-// salmon index -t gencode.v29.transcripts.fa.gz -i index --gencode
-
-// STAR --runThreadN 6 --runMode genomeGenerate –genomeDir Index --genomeFastaFiles Genome/GRCh38.primary_assembly.genome.fa
