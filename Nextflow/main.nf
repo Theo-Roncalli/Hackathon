@@ -137,6 +137,8 @@ process Genome {
     [[ ${genome_url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
     wget ${annotation_url}
     [[ ${annotation_url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
+    touch hola.fa
+    touch hola.gtf
     """
 }
 
