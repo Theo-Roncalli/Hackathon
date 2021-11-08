@@ -204,10 +204,16 @@ workflow {
     //genome_dir_tuple = new Tuple(a, b)
     //url_tuple = new Tuple(params.genome_url, params.annotation_url)
     if (params.genome == null) {
-    	Genome(params.genome_url, params.annotation_url)
+    	genome_ch = Genome(params.genome_url, params.annotation_url)
+        path_genome = genome_ch[0]
+        path_annotation = genome_ch[1]
     } else {
-    	 path_genome = Channel.fromPath("${params.genome}/*.fa", checkIfExists: true)
-    	 path_annotation = Channel.fromPath("${params.genome}/*.gtf", checkIfExists: true)
+    	Channel
+            .fromPath("${params.genome}/*.fa", checkIfExists: true)
+            .set{ path_genome }
+    	Channel
+            .fromPath("${params.genome}/*.gtf", checkIfExists: true)
+            .set{ path_annotation }
     }
     path_genome.view()
     path_annotation.view()
