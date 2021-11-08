@@ -137,8 +137,6 @@ process Genome {
     [[ ${genome_url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
     wget ${annotation_url}
     [[ ${annotation_url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
-    touch hola.fa
-    touch hola.gtf
     """
 }
 
@@ -201,10 +199,6 @@ workflow {
     //fasterq_files.view()
 
     // Retrieve genome and annotations
-    //url_tuple = new Tuple(params.genome_url, Channel.value(params.annotation_url))
-    
-    //genome_dir_tuple = new Tuple(a, b)
-    //url_tuple = new Tuple(params.genome_url, params.annotation_url)
     if (params.genome == null) {
     	Genome(params.genome_url, params.annotation_url)
         path_genome = Genome.out[0]
@@ -217,17 +211,15 @@ workflow {
             .fromPath("${params.genome}/*.gtf", checkIfExists: true)
             .set{ path_annotation }
     }
-    path_genome.view()
-    path_annotation.view()
+    //path_genome.view()
+    //path_annotation.view()
 
-/*
     // Create genome index
     path_index = (
         params.index == null ?
-        Index(genome_tuple) :
+        Index(path_genome, path_annotation) :
         Channel.fromPath("${params.index}", checkIfExists:true)
     )
     path_index.view()
-*/
 
 }
