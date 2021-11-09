@@ -58,7 +58,7 @@
     ######################################################################
 */
 
-// nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome/GRCh38.primary_assembly.genome.fa
+// nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome --index ../Data/Index
 nextflow.enable.dsl=2
 
 log.info """\
@@ -91,7 +91,7 @@ process Fasterq {
     https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump
     */
 
-    tag "Importation of ${ids}"
+    tag "Downloading ${ids}"
 
     input:
         val ids
@@ -133,8 +133,10 @@ process Genome {
     script:
     """
     #!/usr/bin/env bash
+    echo "Downloading genome..."
     wget ${genome_url}
     [[ ${genome_url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
+    echo "Downloading annotations..."
     wget ${annotation_url}
     [[ ${annotation_url} == *.gz ]] && gunzip *.gz || echo "File already unzip."
     """
@@ -156,7 +158,6 @@ process Index {
     ------
         params.index_cpus: an integer, specifying the number of threads to be used
                            whilst creating the index.
-
     */
 
     tag "Creation of the index"
@@ -170,20 +171,42 @@ process Index {
     
     script:
     """
+    #!/usr/bin/env bash
     STAR --runThreadN ${params.index_cpus}\
          --runMode genomeGenerate\
          --genomeFastaFiles ${genome_path}\
          --sjdbGTFfile ${annotation_path}\
          --sjdbOverhang ${params.sjdbOverhang}
     """
+
 }
 
-// process Mapping {
+process Mapping {
     /*
-    STAR for short-read whole-transcriptome sequencing data.
+	Create the mapping for the RNA-seq data.
     */
-    // TODO : write the process specification.
-// }
+
+    tag "Creation of the mapping for"
+
+    input:
+        each fastq_files
+        path index_path
+    
+    script:
+    """
+    #!/usr/bin/env bash
+    echo "${fastq_files[1]} and ${index_path}"
+    """
+
+/*
+    STAR  --genomeDir ../Data/Index \
+      --readFilesIn ../Data/Reads/SRR628582_1.fastq ../Data/Reads/SRR628582_1.fastq \
+      --outSAMtype BAM SortedByCoordinate \
+      --quantMode GeneCounts \
+      --outFileNamePrefix .
+*/
+
+}
 
 workflow {
 
@@ -191,12 +214,12 @@ workflow {
 
     // Retrieve RNA-seq data (fastq files / SRA accession numbers)
     ids = Channel.fromList(params.ids)
-    fasterq_files = (
+    fastq_files = (
         params.reads == null ?
         Fasterq(ids) :
         Channel.fromFilePairs("${params.reads}/SRR*_{1,2}.fastq*", checkIfExists:true)
     )
-    //fasterq_files.view()
+    //fastq_files.view()
 
     // Retrieve genome and annotations
     if (params.genome == null) {
@@ -220,6 +243,9 @@ workflow {
         Index(path_genome, path_annotation) :
         Channel.fromPath("${params.index}", checkIfExists:true)
     )
-    path_index.view()
+    //path_index.view()
+
+    //fastq_files.view()
+    counts_path = Mapping(fastq_files, path_index);
 
 }
