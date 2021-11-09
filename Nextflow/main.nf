@@ -183,20 +183,29 @@ process Index {
 
 process Mapping {
     /*
-	Create the mapping for the RNA-seq data.
+	Create the mapping and counting for the RNA-seq data.
     */
 
-    tag "Creation of the mapping for"
+    tag "Creation of the mapping and counting matrix for ${fastq_files[0]}"
 
     input:
         each fastq_files
         path index_path
+
+//    output:
+//        path counts_path
     
     script:
     """
     #!/usr/bin/env bash
-    echo "${fastq_files[1]} and ${index_path}"
+    STAR  --genomeDir ${index_path} \
+    --readFilesIn ${fastq_files[1][0]} ${fastq_files[1][1]} \
+    --outSAMtype BAM SortedByCoordinate \
+    --quantMode GeneCounts \
+    --outFileNamePrefix counts_path/${fastq_files[0]}_
     """
+
+    // echo "${fastq_files[1][0]} and ${index_path}"
 
 /*
     STAR  --genomeDir ../Data/Index \
@@ -243,7 +252,7 @@ workflow {
         Index(path_genome, path_annotation) :
         Channel.fromPath("${params.index}", checkIfExists:true)
     )
-    //path_index.view()
+    path_index.view()
 
     //fastq_files.view()
     counts_path = Mapping(fastq_files, path_index);
