@@ -1,4 +1,4 @@
-// nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome/Homo_sapiens.GRCh38.dna.primary_assembly.fa
+// nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome --index ../Data/Index
 
 /*
     Nexflow pipeline to perform a full RNA-seq analysis (differential expression)
@@ -58,7 +58,6 @@
     ######################################################################
 */
 
-// nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome --index ../Data/Index
 nextflow.enable.dsl=2
 
 log.info """\
@@ -91,7 +90,7 @@ process Fasterq {
     https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump
     */
 
-    tag "Downloading ${ids}"
+    tag "Downloading ${ids}..."
 
     input:
         val ids
@@ -193,17 +192,20 @@ process Mapping {
         path index_path
 
     output:
-        path "counts_path"
+        path "Counts"
     
     script:
     """
     #!/usr/bin/env bash
-    mkdir counts_path
-    STAR  --genomeDir ${index_path} \
-    --readFilesIn ${fastq_files[1][0]} ${fastq_files[1][1]} \
-    --outSAMtype BAM SortedByCoordinate \
-    --quantMode GeneCounts \
-    --outFileNamePrefix counts_path/${fastq_files[0]}_
+    echo "Downloading mapping and counting for ${fastq_files[0]}..."
+    mkdir Counts
+    STAR  --runThreadN ${params.mapping_cpus}\
+    	  --genomeDir ${index_path} \
+    	  --readFilesIn ${fastq_files[1][0]} ${fastq_files[1][1]} \
+    	  --outSAMtype BAM SortedByCoordinate \
+    	  --quantMode GeneCounts \
+    	  --outFileNamePrefix Counts/${fastq_files[0]}_
+    echo "Done for ${fastq_files[0]}"
     """
 
     // echo "${fastq_files[1][0]} and ${index_path}"
@@ -256,7 +258,7 @@ workflow {
     //path_index.view()
 
     //fastq_files.view()
-    counts_path = Mapping(fastq_files, path_index);
-    counts_path.view();
+    counts_path = Mapping(fastq_files, path_index)
+    counts_path.view()
 
 }
