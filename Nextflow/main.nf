@@ -192,12 +192,13 @@ process Mapping {
         each fastq_files
         path index_path
 
-//    output:
-//        path counts_path
+    output:
+        path "counts_path"
     
     script:
     """
     #!/usr/bin/env bash
+    mkdir counts_path
     STAR  --genomeDir ${index_path} \
     --readFilesIn ${fastq_files[1][0]} ${fastq_files[1][1]} \
     --outSAMtype BAM SortedByCoordinate \
@@ -252,9 +253,10 @@ workflow {
         Index(path_genome, path_annotation) :
         Channel.fromPath("${params.index}", checkIfExists:true)
     )
-    path_index.view()
+    //path_index.view()
 
     //fastq_files.view()
     counts_path = Mapping(fastq_files, path_index);
+    counts_path.view();
 
 }
