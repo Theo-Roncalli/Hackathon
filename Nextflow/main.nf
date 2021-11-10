@@ -208,16 +208,6 @@ process Mapping {
     echo "Done for ${fastq_files[0]}"
     """
 
-    // echo "${fastq_files[1][0]} and ${index_path}"
-
-/*
-    STAR  --genomeDir ../Data/Index \
-      --readFilesIn ../Data/Reads/SRR628582_1.fastq ../Data/Reads/SRR628582_1.fastq \
-      --outSAMtype BAM SortedByCoordinate \
-      --quantMode GeneCounts \
-      --outFileNamePrefix .
-*/
-
 }
 
 workflow {
