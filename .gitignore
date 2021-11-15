@@ -1,6 +1,9 @@
 # Personnal notes
-*.txt
-Docs/notes.txt
+/**/notes.txt
+/**/*temp*
+/**/*tmp*
+/**/*.md
+
 
 # Downloaded data
 /**/*.fastq
