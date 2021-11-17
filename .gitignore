@@ -1,15 +1,12 @@
 # Personnal notes
-notes.txt
-Docs/notes.txt
+/**/notes.txt
 /**/*temp*
 /**/*tmp*
 /**/*.md
 
+
 # Downloaded data
 /**/*.fastq
-
-# Processed data (genome Index)
-/**/Data
 
 # Temporary Nextflow files
 Nextflow/Temp
@@ -38,12 +35,8 @@ small_test_files
 # drafts
 truc_ultime.bash
 
-# site (documentation)
-site
-
-# manual logs
-/**/*log*
-/**/*manual*
+# reference (cheatsheets)
+md_ref.md
 
 ################### R ignores ####################### 
 .Rproj.user
@@ -146,3 +139,47 @@ nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
+
+## gh-pages
+/**/??*.Rmd
+DESCRIPTION
+Data/
+Dockerfile
+Nextflow/
+_book/
+_bookdown.yml
+_bookdown_files/
+_build.sh
+_deploy.sh
+_output.yml
+_publish.R
+book.bib
+bookdown-demo.Rproj
+build-site.r
+docs/
+index.Rmd
+licenses/
+manual_logs/
+now.json
+packages.bib
+preamble.tex
+renv.lock
+renv/
+site/RNA-seq-CATS-small.png
+site/aber.png
+site/aquisihay.png
+site/assets/
+site/baseplot.png
+site/bio-TAGI.png
+site/data_Nestorowa.csv
+site/ggplot2.png
+site/hola.png
+site/logo.png
+site/logo2.png
+site/rostizado.png
+site/smol-rna.png
+site/src/
+site/test.png
+style.css
+test.txt
+toc.css
