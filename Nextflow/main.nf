@@ -1,5 +1,14 @@
 // nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome --index ../Data/Index
 
+/* nextflow run main.nf --reads ../Data/ReadsTmp \
+--genome_url http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr18.fa.gz \
+--annotation_url ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_24/GRCh37_mapping/gencode.v24lift37.basic.annotation.gtf.gz \
+--index_cpus 7 \
+--mapping_cpus 7 \
+--mapping_memory '12GB'
+
+*/
+
 /*
     Nexflow pipeline to perform a full RNA-seq analysis (differential expression)
     from a series of SRA accession numbers and a reference genome.
@@ -116,7 +125,7 @@ process Genome {
     ------
         A path (glob), of all the uncompressed parts of the genome.
     */
-    tag "Retreiving genome: ${genome_url}, annotation: ${annotation_url}"
+    tag "Retrieving genome: ${genome_url}, annotation: ${annotation_url}"
 
     input:
         val genome_url
@@ -159,6 +168,7 @@ process Index {
                            whilst creating the index.
     */
 
+	cpus=params.index_cpus
     tag "Creation of the index"
 
     input:
@@ -171,10 +181,10 @@ process Index {
     script:
     """
     #!/usr/bin/env bash
-    STAR --runThreadN ${params.index_cpus}\
-         --runMode genomeGenerate\
-         --genomeFastaFiles ${genome_path}\
-         --sjdbGTFfile ${annotation_path}\
+    STAR --runThreadN ${params.index_cpus} \
+         --runMode genomeGenerate \
+         --genomeFastaFiles ${genome_path} \
+         --sjdbGTFfile ${annotation_path} \
          --sjdbOverhang ${params.sjdbOverhang}
     """
 
@@ -185,6 +195,8 @@ process Mapping {
 	Create the mapping and counting for the RNA-seq data.
     */
 
+    cpus = params.mapping_cpus
+    memory = params.mapping_memory
     tag "Creation of the mapping and counting matrix for ${fastq_files[0]}"
 
     input:
@@ -198,13 +210,13 @@ process Mapping {
     """
     #!/usr/bin/env bash
     echo "Downloading mapping and counting for ${fastq_files[0]}..."
-    mkdir Counts
+    mkdir Mapping
     STAR  --runThreadN ${params.mapping_cpus}\
     	  --genomeDir ${index_path} \
     	  --readFilesIn ${fastq_files[1][0]} ${fastq_files[1][1]} \
     	  --outSAMtype BAM SortedByCoordinate \
     	  --quantMode GeneCounts \
-    	  --outFileNamePrefix Counts/${fastq_files[0]}_
+    	  --outFileNamePrefix Mapping/${fastq_files[0]}_
     echo "Done for ${fastq_files[0]}"
     """
 
@@ -248,7 +260,7 @@ workflow {
     //path_index.view()
 
     //fastq_files.view()
-    counts_path = Mapping(fastq_files, path_index)
-    counts_path.view()
+    mapping_path = Mapping(fastq_files, path_index)
+    mapping_path.view()
 
 }
