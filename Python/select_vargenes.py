@@ -40,7 +40,7 @@ from tagi_rnaseq.parsing import *
 from tagi_rnaseq.normalization import *
 
 
-def main(in_file, out_file):
+def main(in_file, out_file, loess, percentile):
     """ intended for command line usage """
     # The whole raw dataset
     x = parse_counts_file(in_file)
@@ -61,10 +61,10 @@ def main(in_file, out_file):
     st.set_workdir(adata, workdir="workdir")
     st.select_variable_genes(
         adata,
-        loess_frac=0.01,
-        percentile=95,
+        loess_frac=loess,
+        percentile=percentile,
         save_fig=True,
-        fig_name=f"{in_file.split('/')[-1].replace('.csv', '')}_std_vs_means.png",
+        fig_name=f"{in_file.split('/')[-1].split('.')[0]}_{loess}_{percentile}_std_vs_means.png",
     )
 
     # extract the genes index
@@ -77,11 +77,13 @@ def main(in_file, out_file):
 
 if __name__ == "__main__":
     n_args = len(sys.argv) - 1
-    if n_args == 2:
-        main(sys.argv[1], sys.argv[2])
+    if n_args == 4:
+        main(sys.argv[1], sys.argv[2], float(sys.argv[3]), float(sys.argv[4]))
     else:
         print("")
         print("Select most variable genes.")
         print("usage: ")
-        print(f"$ python {__file__} <<raw_counts.csv>> <<out_file.csv>> ")
+        print(f"$ python {__file__} <<raw_counts.csv>> <<out_file.csv>> loess_frac percentile")
+        print("example loess and percentile : ")
+        print(f"$ python {__file__} <<raw_counts.csv>> <<out_file.csv>> 0.1 0.95")
         raise SystemExit("Incorrect usage.")

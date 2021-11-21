@@ -17,6 +17,7 @@ Nextflow/.*
 # ignore temp nextflow files
 /**/.nextflow*
 # ignore data files
+/**/*.csv
 /**/*.fa
 /**/*.gtf
 /**/work
