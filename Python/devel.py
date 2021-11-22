@@ -21,3 +21,5 @@ log_cpm = log_transform(cpm)
 
 # most variable genes
 vargenes = pd.read_csv("var_counts.csv", index_col=0)
+
+stats = pd.DataFrame(dict(mean=log_cpm.T.mean(), std=log_cpm.T.std()))
