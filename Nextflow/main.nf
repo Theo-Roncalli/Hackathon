@@ -3,9 +3,9 @@
 /* nextflow run main.nf --reads ../Data/ReadsTmp \
 --genome_url http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr18.fa.gz \
 --annotation_url ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_24/GRCh37_mapping/gencode.v24lift37.basic.annotation.gtf.gz \
---index_cpus 7 \
---mapping_cpus 7 \
---mapping_memory '12GB'
+--index_cpus 14 \
+--mapping_cpus 14 \
+--mapping_memory '50GB'
 
 */
 
@@ -192,34 +192,33 @@ process Index {
 
 process Mapping {
     /*
-	Create the mapping and counting for the RNA-seq data.
+	Create the mapping for the RNA-seq data.
     */
 
     cpus = params.mapping_cpus
     memory = params.mapping_memory
-    tag "Creation of the mapping and counting matrix for ${fastq_files[0]}"
+    tag "Mapping ${fastq_files[0]} to reference genome index."
 
     input:
         each fastq_files
         path index_path
 
     output:
-        path "Counts"
+        path "Mapping"
     
     script:
     """
     #!/usr/bin/env bash
-    echo "Downloading mapping and counting for ${fastq_files[0]}..."
+    echo "Mapping computation for ${fastq_files[0]}..."
     mkdir Mapping
-    STAR  --runThreadN ${params.mapping_cpus}\
+    STAR  --runThreadN ${params.mapping_cpus} \
+    	  --outFilterMultimapNmax 10 \
     	  --genomeDir ${index_path} \
     	  --readFilesIn ${fastq_files[1][0]} ${fastq_files[1][1]} \
     	  --outSAMtype BAM SortedByCoordinate \
-    	  --quantMode GeneCounts \
     	  --outFileNamePrefix Mapping/${fastq_files[0]}_
     echo "Done for ${fastq_files[0]}"
     """
-
 }
 
 workflow {
