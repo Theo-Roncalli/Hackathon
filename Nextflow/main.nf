@@ -170,7 +170,6 @@ process Index {
                            whilst creating the index.
     */
 
-	cpus=params.index_cpus
     tag "Creation of the index"
 
     input:
@@ -197,7 +196,6 @@ process Mapping {
 	Create the mapping for the RNA-seq data.
     */
 
-    cpus = params.mapping_cpus
     memory = params.mapping_memory
     tag "Mapping ${fastq_files[0]} to reference genome index."
 
@@ -221,6 +219,33 @@ process Mapping {
     echo "Done for ${fastq_files[0]}"
     """
 }
+
+process Counting {
+    /*
+	Create the counting matrix for the RNA-seq data.
+    */
+
+    tag "Counting the number of reads per gene."
+
+    input:
+    path annotation_file
+    path bam_files
+
+    output:
+    path "counts.txt"
+
+    script:
+    """
+    #!/usr/bin/env bash
+    featureCounts -p -T ${params.counting_cpus} -t gene -g gene_id -s 0 -a ${annotation_file} -o counts.txt ${bam_files}
+    """
+
+}
+
+
+//     echo "here the bam files :${bam_files[0]}..."
+//    echo "here the bam files :${bam_files}..."
+
 
 // samtools index ${fastq_files[0]}.bam
 
@@ -259,21 +284,15 @@ workflow {
         Index(path_genome, path_annotation) :
         Channel.fromPath("${params.index}", checkIfExists:true)
     )
-    path_index.view()
+//    path_index.view()
 
     //fastq_files.view()
     mapping_path = Mapping(fastq_files, path_index)
 
     // Create counting matrix
-
-
-
-
-
-    mapping_path.collect().view()
+    counting_path = Counting(path_annotation,mapping_path.collect().view())
+    counting_path.view()
 
 }
-
-
 
 // featureCounts -T CPUS -t gene -g gene_id -s 0 -a annotations.gtf -o counts.txt -M bam1 bam2 bam3 bam4
