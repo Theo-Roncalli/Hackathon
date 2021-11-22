@@ -3,9 +3,11 @@
 /* nextflow run main.nf --reads ../Data/ReadsTmp \
 --genome_url http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr18.fa.gz \
 --annotation_url ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_24/GRCh37_mapping/gencode.v24lift37.basic.annotation.gtf.gz \
---index_cpus 14 \
---mapping_cpus 14 \
---mapping_memory '50GB'
+--index_cpus 7 \
+--mapping_cpus 7 \
+--mapping_memory '12GB' \
+--index /home/ubuntu/Documents/AMI2B/Hackathon/Projet/Data/IndexTmp \
+--genome /home/ubuntu/Documents/AMI2B/Hackathon/Projet/Data/GenomeTmp
 
 */
 
@@ -204,22 +206,23 @@ process Mapping {
         path index_path
 
     output:
-        path "Mapping"
+        path "${fastq_files[0]}.bam"
     
     script:
     """
     #!/usr/bin/env bash
     echo "Mapping computation for ${fastq_files[0]}..."
-    mkdir Mapping
     STAR  --runThreadN ${params.mapping_cpus} \
     	  --outFilterMultimapNmax 10 \
     	  --genomeDir ${index_path} \
     	  --readFilesIn ${fastq_files[1][0]} ${fastq_files[1][1]} \
-    	  --outSAMtype BAM SortedByCoordinate \
-    	  --outFileNamePrefix Mapping/${fastq_files[0]}_
+    	  --outSAMtype BAM SortedByCoordinate
+    mv Aligned.sortedByCoord.out.bam ${fastq_files[0]}.bam
     echo "Done for ${fastq_files[0]}"
     """
 }
+
+// samtools index ${fastq_files[0]}.bam
 
 workflow {
 
@@ -232,7 +235,7 @@ workflow {
         Fasterq(ids) :
         Channel.fromFilePairs("${params.reads}/SRR*_{1,2}.fastq*", checkIfExists:true)
     )
-    //fastq_files.view()
+//    fastq_files.view()
 
     // Retrieve genome and annotations
     if (params.genome == null) {
@@ -247,8 +250,8 @@ workflow {
             .fromPath("${params.genome}/*.gtf", checkIfExists: true)
             .set{ path_annotation }
     }
-    //path_genome.view()
-    //path_annotation.view()
+//    path_genome.view()
+//    path_annotation.view()
 
     // Create genome index
     path_index = (
@@ -256,10 +259,21 @@ workflow {
         Index(path_genome, path_annotation) :
         Channel.fromPath("${params.index}", checkIfExists:true)
     )
-    //path_index.view()
+    path_index.view()
 
     //fastq_files.view()
     mapping_path = Mapping(fastq_files, path_index)
-    mapping_path.view()
+
+    // Create counting matrix
+
+
+
+
+
+    mapping_path.collect().view()
 
 }
+
+
+
+// featureCounts -T CPUS -t gene -g gene_id -s 0 -a annotations.gtf -o counts.txt -M bam1 bam2 bam3 bam4
