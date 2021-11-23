@@ -293,7 +293,7 @@ workflow {
     mapping_path = Mapping(fastq_files, path_index)
 
     // Create counting matrix
-    counting_path = Counting(path_annotation,mapping_path.collect().view())
+    counting_path = Counting(path_annotation,mapping_path.collect())
     counting_path.view()
 
 }
