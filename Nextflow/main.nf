@@ -170,6 +170,7 @@ process Index {
                            whilst creating the index.
     */
 
+    cpus params.index_cpus
     tag "Creation of the index"
 
     input:
@@ -182,7 +183,7 @@ process Index {
     script:
     """
     #!/usr/bin/env bash
-    STAR --runThreadN ${params.index_cpus} \
+    STAR --runThreadN ${task.cpus} \
          --runMode genomeGenerate \
          --genomeFastaFiles ${genome_path} \
          --sjdbGTFfile ${annotation_path} \
@@ -196,7 +197,8 @@ process Mapping {
 	Create the mapping for the RNA-seq data.
     */
 
-    memory = params.mapping_memory
+    memory params.mapping_memory
+    cpus params.mapping_cpus
     tag "Mapping ${fastq_files[0]} to reference genome index."
 
     input:
@@ -210,7 +212,7 @@ process Mapping {
     """
     #!/usr/bin/env bash
     echo "Mapping computation for ${fastq_files[0]}..."
-    STAR  --runThreadN ${params.mapping_cpus} \
+    STAR  --runThreadN ${task.cpus} \
     	  --outFilterMultimapNmax 10 \
     	  --genomeDir ${index_path} \
     	  --readFilesIn ${fastq_files[1][0]} ${fastq_files[1][1]} \
@@ -225,6 +227,7 @@ process Counting {
 	Create the counting matrix for the RNA-seq data.
     */
 
+    cpus params.counting_cpus
     tag "Counting the number of reads per gene."
 
     input:
