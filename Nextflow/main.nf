@@ -1,19 +1,7 @@
-/* nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome --index ../Data/Index \
+/* nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome --index ../Data/Index --mapping ../Data/Mapping \
 --index_cpus 7 \
 --mapping_cpus 7 \
 --mapping_memory '12GB'
-*/
-
-
-/* nextflow run main.nf --reads ../Data/ReadsTmp \
---genome_url http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr18.fa.gz \
---annotation_url ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_24/GRCh37_mapping/gencode.v24lift37.basic.annotation.gtf.gz \
---index_cpus 7 \
---mapping_cpus 7 \
---mapping_memory '12GB' \
---index /home/ubuntu/Documents/AMI2B/Hackathon/Projet/Data/IndexTmp \
---genome /home/ubuntu/Documents/AMI2B/Hackathon/Projet/Data/GenomeTmp
-
 */
 
 /*
@@ -251,11 +239,6 @@ process Counting {
 
 }
 
-
-//     echo "here the bam files :${bam_files[0]}..."
-//    echo "here the bam files :${bam_files}..."
-
-
 // samtools index ${fastq_files[0]}.bam
 
 workflow {
@@ -302,13 +285,11 @@ workflow {
         Mapping(fastq_files, path_index) :
         Channel.fromPath("${params.mapping}/*.bam", checkIfExists:true)
     )
-    mapping_path.view()
-    path_annotation.view()
+//    mapping_path.view()
+//    path_annotation.view()
 
     // Create counting matrix
     counting_path = Counting(path_annotation,mapping_path.toSortedList())
     counting_path.view()
 
 }
-
-// featureCounts -T CPUS -t gene -g gene_id -s 0 -a annotations.gtf -o counts.txt -M bam1 bam2 bam3 bam4
