@@ -1,4 +1,9 @@
-// nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome --index ../Data/Index
+/* nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome --index ../Data/Index \
+--index_cpus 7 \
+--mapping_cpus 7 \
+--mapping_memory '12GB'
+*/
+
 
 /* nextflow run main.nf --reads ../Data/ReadsTmp \
 --genome_url http://hgdownload.soe.ucsc.edu/goldenPath/hg19/chromosomes/chr18.fa.gz \
@@ -240,6 +245,7 @@ process Counting {
     script:
     """
     #!/usr/bin/env bash
+    echo ${bam_files}
     featureCounts -p -T ${params.counting_cpus} -t gene -g gene_id -s 0 -a ${annotation_file} -o counts.txt ${bam_files}
     """
 
@@ -290,7 +296,14 @@ workflow {
 //    path_index.view()
 
     //fastq_files.view()
-    mapping_path = Mapping(fastq_files, path_index)
+//    mapping_path = Mapping(fastq_files, path_index)
+    mapping_path = (
+        params.mapping == null ?
+        Mapping(fastq_files, path_index) :
+        Channel.fromPath("${params.mapping}/*.bam", checkIfExists:true)
+    )
+    mapping_path.view()
+    path_annotation.view()
 
     // Create counting matrix
     counting_path = Counting(path_annotation,mapping_path.toSortedList())
