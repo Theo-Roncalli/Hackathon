@@ -12,7 +12,8 @@ metadata <- read.table("SraRunTable.txt",header = T, row.names = 1, sep=",")
 id <- rownames(metadata)
 
 tumor <- metadata$tumor_class
-tumor <- replace(tumor, tumor=="", "Class 2")
+tumor <- replace(tumor, tumor=="Class 1", "Class1")
+tumor <- replace(tumor, tumor=="", "Class2")
 
 mutation <- metadata$sf3b1_mutation_status
 mutation <- replace(mutation, mutation=="Class 1 R625C", "Yes")
@@ -28,9 +29,12 @@ metaData$mutation <- factor(metaData$mutation)
 
 library(DESeq2)
 
-dds <- DESeqDataSetFromMatrix(countData=countData, 
-                              colData=metaData, 
-                              design=~mutation, tidy = FALSE)
+# des <- ~ tumor + mutation + mutation:tumor
+des <- ~ mutation
+
+dds <- DESeqDataSetFromMatrix(countData = countData,
+                              colData = metaData, 
+                              design = des, tidy = FALSE)
 
 dds <- DESeq(dds)
 
@@ -44,7 +48,47 @@ summary(res)
 res <- res[order(res$padj),] # Order by p-value
 head(res)
 
+### P-values
+
+par(mfrow=c(1,2))
+
+library(ggplot2)
+library(hrbrthemes)
+
+# dataset:
+data=data.frame(value=rnorm(100))
+
+pvalue.df <- data.frame(type = c(rep("pvalue", nrow(res)), rep("pvalue adjusted", nrow(res))),
+                        pvalue = c(res$pvalue, res$padj))
+
+ggplot(pvalue.df, aes(x=pvalue, fill=type)) + 
+  geom_histogram(aes(y=..density..), binwidth=0.05, color="#e9ecef", alpha=0.6, position = 'identity') +
+  scale_fill_manual(values=c("#69b3a2", "#404080")) +
+  theme_ipsum() +
+  labs(fill="")
+
+plot1 <- ggplot(res, aes(x=pvalue)) +
+  geom_histogram(aes(y=..density..), binwidth=0.05, fill="#69b3a2", color="#e9ecef", alpha=0.6, position = 'identity') +
+  theme_ipsum()
+
+plot2 <- ggplot(res, aes(x=padj)) +
+  geom_histogram(aes(y=..density..), binwidth=0.05, fill="#404080", color="#e9ecef", alpha=0.6, position = 'identity') +
+  theme_ipsum()
+
+require(gridExtra)
+grid.arrange(plot1, plot2, ncol=2)
+
+table(res$pvalue < 0.05)
+table(res$padj < 0.05)
+
+
 ### Count plot ###
+
+par(mfrow=c(1,3))
+
+plotCounts(dds, gene="ENSG00000245694", intgroup="mutation") # CRNDE
+plotCounts(dds, gene="ENSG00000101019", intgroup="mutation") # UQCC
+plotCounts(dds, gene="ENSG00000114770", intgroup="mutation") # ABCC5
 
 par(mfrow=c(2,3))
 
@@ -55,16 +99,6 @@ for (i in 1:6){
 # Next steps in exploring these data...BLAST to database to find associated gene function
 
 ### Volcano plot ###
-
-par(mfrow=c(1,1))
-
-plot(res$log2FoldChange, -log10(res$pvalue), pch=20, main="Volcano plot", xlim=c(-7.3,7.3), xlab="log2FoldChange", ylab="-log(pvalue)")
-res.condition1 <- subset(res, padj<.01)
-points(res.condition1$log2FoldChange, -log10(res.condition1$pvalue), pch=20, col="blue")
-res.condition2 <- subset(res, padj<.01 & abs(log2FoldChange)>3)
-points(res.condition2$log2FoldChange, -log10(res.condition2$pvalue), pch=20, col="red")
-
-text(res.condition1$log2FoldChange, -log10(res.condition1$pvalue), labels=rownames(res.condition1), cex=0.6, font=2)
 
 library(ggrepel)
 
@@ -79,3 +113,13 @@ ggplot(data = res.condition2, aes(x = log2FoldChange, y = -log10(pvalue), label 
   geom_text_repel(size=3) +
   xlim(-7.3, 7.3) +
   theme_classic(base_size = 11)
+
+### PCA ###
+
+vsdata <- vst(dds, blind=FALSE)
+plotPCA(vsdata, intgroup="mutation")
+
+
+
+
+
