@@ -45,9 +45,6 @@ dds <- DESeq(dds)
 res <- results(dds, tidy=FALSE)
 summary(res)
 
-res <- res[order(res$padj),] # Order by p-value
-head(res)
-
 ### P-values
 
 par(mfrow=c(1,2))
@@ -55,25 +52,22 @@ par(mfrow=c(1,2))
 library(ggplot2)
 library(hrbrthemes)
 
-# dataset:
-data=data.frame(value=rnorm(100))
-
 pvalue.df <- data.frame(type = c(rep("pvalue", nrow(res)), rep("pvalue adjusted", nrow(res))),
                         pvalue = c(res$pvalue, res$padj))
 
 ggplot(pvalue.df, aes(x=pvalue, fill=type)) + 
   geom_histogram(aes(y=..density..), binwidth=0.05, color="#e9ecef", alpha=0.6, position = 'identity') +
   scale_fill_manual(values=c("#69b3a2", "#404080")) +
-  theme_ipsum() +
+  theme_classic(base_size = 11) +
   labs(fill="")
 
-plot1 <- ggplot(res, aes(x=pvalue)) +
-  geom_histogram(aes(y=..density..), binwidth=0.05, fill="#69b3a2", color="#e9ecef", alpha=0.6, position = 'identity') +
-  theme_ipsum()
+plot1 <- ggplot(data.frame(res), aes(x=pvalue)) +
+  geom_histogram(aes(y=..density..), binwidth=0.07, fill="#69b3a2", color="#e9ecef", alpha=0.6, position = 'identity') +
+  theme_classic(base_size = 11)
 
-plot2 <- ggplot(res, aes(x=padj)) +
-  geom_histogram(aes(y=..density..), binwidth=0.05, fill="#404080", color="#e9ecef", alpha=0.6, position = 'identity') +
-  theme_ipsum()
+plot2 <- ggplot(data.frame(res), aes(x=padj)) +
+  geom_histogram(aes(y=..density..), binwidth=0.07, fill="#404080", color="#e9ecef", alpha=0.6, position = 'identity') +
+  theme_classic(base_size = 11)
 
 require(gridExtra)
 grid.arrange(plot1, plot2, ncol=2)
@@ -81,8 +75,16 @@ grid.arrange(plot1, plot2, ncol=2)
 table(res$pvalue < 0.05)
 table(res$padj < 0.05)
 
+### MA plot ###
+
+par(mfrow=c(1,1))
+
+plotMA(res, ylim=c(-20,20))
 
 ### Count plot ###
+
+res <- res[order(res$padj),] # Order by adjusted p-value
+head(res)
 
 par(mfrow=c(1,3))
 
@@ -118,8 +120,3 @@ ggplot(data = res.condition2, aes(x = log2FoldChange, y = -log10(pvalue), label 
 
 vsdata <- vst(dds, blind=FALSE)
 plotPCA(vsdata, intgroup="mutation")
-
-
-
-
-
