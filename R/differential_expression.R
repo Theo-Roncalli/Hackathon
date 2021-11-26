@@ -3,6 +3,11 @@
 rm(list=objects())
 graphics.off()
 
+library(DESeq2)
+library(tidyr)
+library(ggplot2)
+library(ggrepel)
+
 path_to_figures <- "/home/ubuntu/Documents/AMI2B/Hackathon/Projet/Figures"
 path_to_counts <- "/home/ubuntu/Documents/AMI2B/Hackathon/Projet/Data/Counts"
 path_to_metadata <- "/home/ubuntu/Documents/AMI2B/Hackathon/Projet/R"
@@ -31,8 +36,6 @@ metaData <- data.frame(id, tumor, mutation)
 metaData$tumor <- factor(metaData$tumor)
 metaData$mutation <- factor(metaData$mutation)
 
-library(DESeq2)
-
 # des <- ~ tumor + mutation + mutation:tumor
 des <- ~ mutation
 
@@ -51,31 +54,33 @@ summary(res)
 
 ### P-values
 
-library(ggplot2)
-library(hrbrthemes)
-
 pvalue.df <- data.frame(type = c(rep("pvalue", nrow(res)), rep("pvalue adjusted", nrow(res))),
                         pvalue = c(res$pvalue, res$padj))
 
-p <- ggplot(pvalue.df, aes(x=pvalue, fill=type)) + 
+plot.pvalue.bind <- ggplot(pvalue.df, aes(x=pvalue, fill=type)) + 
   geom_histogram(aes(y=..density..), binwidth=0.05, color="#e9ecef", alpha=0.6, position = 'identity') +
   scale_fill_manual(values=c("#69b3a2", "#404080")) +
   theme_classic(base_size = 11) +
   labs(fill="")
 
-paste(path_to_figures, "histogram_pvalues.png", sep="/") %>%
-  ggsave(plot = p)
+paste(path_to_figures, "histogram_pvalue_bind.png", sep="/") %>%
+  ggsave(plot = plot.pvalue.bind)
+rm(plot.pvalue.bind)
 
-plot1 <- ggplot(data.frame(res), aes(x=pvalue)) +
+plot.pvalue <- ggplot(data.frame(res), aes(x=pvalue)) +
   geom_histogram(aes(y=..density..), binwidth=0.07, fill="#69b3a2", color="#e9ecef", alpha=0.6, position = 'identity') +
   theme_classic(base_size = 11)
 
-plot2 <- ggplot(data.frame(res), aes(x=padj)) +
+plot.padj <- ggplot(data.frame(res), aes(x=padj)) +
   geom_histogram(aes(y=..density..), binwidth=0.07, fill="#404080", color="#e9ecef", alpha=0.6, position = 'identity') +
   theme_classic(base_size = 11)
 
 require(gridExtra)
-grid.arrange(plot1, plot2, ncol=2)
+plot.pvalue.unbind <- grid.arrange(plot.pvalue, plot.padj, ncol=2)
+
+paste(path_to_figures, "histogram_pvalue_unbind.png", sep="/") %>%
+  ggsave(plot = plot.pvalue.unbind)
+rm(plot.pvalue, plot.padj, plot.pvalue.unbind)
 
 table(res$pvalue < 0.05)
 table(res$padj < 0.05)
@@ -84,7 +89,9 @@ table(res$padj < 0.05)
 
 par(mfrow=c(1,1))
 
-plotMA(res, ylim=c(-20,20))
+paste(path_to_figures, "MA_plot.png", sep="/") %>% png(width = 800, height = 800)
+plotMA(res, ylim=c(-7,7))
+dev.off()
 
 ### Count plot ###
 
@@ -97,29 +104,30 @@ plotCounts(dds, gene="ENSG00000245694", intgroup="mutation") # CRNDE
 plotCounts(dds, gene="ENSG00000101019", intgroup="mutation") # UQCC
 plotCounts(dds, gene="ENSG00000114770", intgroup="mutation") # ABCC5
 
+paste(path_to_figures, "count_plot.png", sep="/") %>% png(width = 800, height = 800)
 par(mfrow=c(2,3))
-
 for (i in 1:6){
   plotCounts(dds, gene=rownames(res)[i], intgroup="mutation")
 }
-
-# Next steps in exploring these data...BLAST to database to find associated gene function
+dev.off()
 
 ### Volcano plot ###
-
-library(ggrepel)
 
 res <- results(dds, tidy=TRUE)
 res.condition1 <- subset(res, padj<.1)
 res.condition2 <- subset(res, (padj<.005 & -log10(pvalue) > 6))
 
-ggplot(data = res.condition2, aes(x = log2FoldChange, y = -log10(pvalue), label = row)) +
+plot.volcano <- ggplot(data = res.condition2, aes(x = log2FoldChange, y = -log10(pvalue), label = row)) +
   geom_point(data = res, aes(x = log2FoldChange, y = -log10(pvalue)), color = "black") +
   geom_point(data = res.condition1, aes(x = log2FoldChange, y = -log10(pvalue)), color = "blue") +
   geom_point(color = "red") +
   geom_text_repel(size=3) +
   xlim(-7.3, 7.3) +
   theme_classic(base_size = 11)
+
+paste(path_to_figures, "volcano_plot.png", sep="/") %>%
+  ggsave(plot = plot.volcano)
+rm(plot.volcano)
 
 ### PCA ###
 
