@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 rm(list=objects())
 graphics.off()
 
