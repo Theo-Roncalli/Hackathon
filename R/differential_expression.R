@@ -3,13 +3,15 @@
 rm(list=objects())
 graphics.off()
 
-setwd("/home/ubuntu/Documents/AMI2B/Hackathon/Projet/R")
+path_to_figures <- "/home/ubuntu/Documents/AMI2B/Hackathon/Projet/Figures"
+path_to_counts <- "/home/ubuntu/Documents/AMI2B/Hackathon/Projet/Data/Counts"
+path_to_metadata <- "/home/ubuntu/Documents/AMI2B/Hackathon/Projet/R"
 
-counts <- read.table("counts.txt",header = T, row.names = 1)
+counts <- paste(path_to_counts, "counts.txt", sep="/") %>% read.table(header = T, row.names = 1)
 colnames(counts) <- sub("\\.bam", "", colnames(counts))
 countData <- counts[rowSums(counts[,6:13]) > 0,][,6:13]
 
-metadata <- read.table("SraRunTable.txt",header = T, row.names = 1, sep=",")
+metadata <- paste(path_to_metadata, "SraRunTable.txt", sep="/") %>% read.table(header = T, row.names = 1, sep=",")
 
 id <- rownames(metadata)
 
@@ -49,19 +51,20 @@ summary(res)
 
 ### P-values
 
-par(mfrow=c(1,2))
-
 library(ggplot2)
 library(hrbrthemes)
 
 pvalue.df <- data.frame(type = c(rep("pvalue", nrow(res)), rep("pvalue adjusted", nrow(res))),
                         pvalue = c(res$pvalue, res$padj))
 
-ggplot(pvalue.df, aes(x=pvalue, fill=type)) + 
+p <- ggplot(pvalue.df, aes(x=pvalue, fill=type)) + 
   geom_histogram(aes(y=..density..), binwidth=0.05, color="#e9ecef", alpha=0.6, position = 'identity') +
   scale_fill_manual(values=c("#69b3a2", "#404080")) +
   theme_classic(base_size = 11) +
   labs(fill="")
+
+paste(path_to_figures, "histogram_pvalues.png", sep="/") %>%
+  ggsave(plot = p)
 
 plot1 <- ggplot(data.frame(res), aes(x=pvalue)) +
   geom_histogram(aes(y=..density..), binwidth=0.07, fill="#69b3a2", color="#e9ecef", alpha=0.6, position = 'identity') +
