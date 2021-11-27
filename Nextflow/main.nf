@@ -335,6 +335,27 @@ workflow RNASeq_quant {
 
 }
 
+workflow RNASeq_analysis {
+
+    take:
+    counting_path
+
+    emit:
+    figures_path
+
+    main:
+    // Peform RNASeq analysis
+    deseq_path = Channel.fromPath("templates/differential_analysis.R")
+    metadata_path = (
+        params.metadata == null ?
+        Channel.fromPath("SraRunTable.txt") :
+        Channel.fromPath(params.metadata)
+    )
+    figures_path = DESeq(deseq_path, counting_path, metadata_path)
+
+}
+
+
 workflow {
     
     counting_path = (
@@ -342,11 +363,8 @@ workflow {
         RNASeq_quant() :
         Channel.fromPath("${params.counting}", checkIfExists:true)
     )
-
-    DESeq_path = Channel.fromPath("templates/differential_analysis.R")
-    metadata_path = Channel.fromPath("SraRunTable.txt")
-
-    figure_path = DESeq(DESeq_path, counting_path, metadata_path)
+    
+    figure_path = RNASeq_analysis(counting_path)
     figure_path.view()
 
 }
