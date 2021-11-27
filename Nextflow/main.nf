@@ -270,6 +270,24 @@ process Counting {
 
 }
 
+process DESeq {
+
+    input:
+    path DESeq_path
+    path counting_path
+    path metadata_path
+
+    output:
+    path "Figures"
+
+    script:
+    """
+    mkdir Figures
+    Rscript --vanilla ${DESeq_path} "${counting_path}" "${metadata_path}"
+    """
+
+}
+
 workflow RNASeq_quant {
 
     emit:
@@ -325,6 +343,13 @@ workflow {
         Channel.fromPath("${params.counting}", checkIfExists:true)
     )
     counting_path.view()
+
+    DESeq_path = Channel.fromPath("../R/template_DESeq.R")
+    metadata_path = Channel.fromPath("SraRunTable.txt")
+
+    counting_path.view()
+
+    DESeq(DESeq_path, counting_path, metadata_path)
 
 }
 
