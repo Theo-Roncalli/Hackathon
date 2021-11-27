@@ -342,16 +342,13 @@ workflow {
         RNASeq_quant() :
         Channel.fromPath("${params.counting}", checkIfExists:true)
     )
-    counting_path.view()
 
-    DESeq_path = Channel.fromPath("../R/template_DESeq.R")
+    DESeq_path = Channel.fromPath("templates/differential_analysis.R")
     metadata_path = Channel.fromPath("SraRunTable.txt")
 
-    counting_path.view()
-
-    DESeq(DESeq_path, counting_path, metadata_path)
+    figure_path = DESeq(DESeq_path, counting_path, metadata_path)
+    figure_path.view()
 
 }
-
 
 // nextflow run main.nf --counting ../Data/Counts/counts.txt
