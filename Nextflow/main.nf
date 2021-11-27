@@ -270,8 +270,12 @@ process Counting {
 
 }
 
-workflow {
+workflow RNASeq_quant {
 
+    emit:
+    counting_path
+
+    main:
     // Download RNA-seq data (fastq files / SRA accession numbers)
     ids = Channel.fromList(params.ids)
     fastq_files = (
@@ -310,6 +314,19 @@ workflow {
 
     // Create counting matrix
     counting_path = Counting(path_annotation,mapping_path.toSortedList())
+
+}
+
+workflow {
+    
+    counting_path = (
+        params.counting == null ?
+        RNASeq_quant() :
+        Channel.fromPath("${params.counting}", checkIfExists:true)
+    )
     counting_path.view()
 
 }
+
+
+// nextflow run main.nf --counting ../Data/Counts/counts.txt
