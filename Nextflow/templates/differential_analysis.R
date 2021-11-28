@@ -5,10 +5,10 @@ args = commandArgs(trailingOnly=TRUE)
 install.packages("pacman", repos="https://cran.irsn.fr/")
 library(pacman)
 
-p_load(tidyr, ggplot2, ggrepel, BiocManager)
+p_load(tidyr, ggplot2, ggrepel, gridExtra)
+# p_load(tidyr, ggplot2, ggrepel, BiocManager, gridExtra)
 
-BiocManager::install("DESeq2")
-
+# BiocManager::install("DESeq2")
 library(DESeq2)
 
 path_to_counts <- args[1]

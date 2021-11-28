@@ -331,12 +331,7 @@ workflow RNASeq_quant {
     )
 
     // Create counting matrix
-    mapping_path.toSortedList().view()
-//    mapping_path.toList().view()
-//    sub = { it.substring(5, 19) }
-
-// println list.collect({sub})
-    counting_path = Counting(path_annotation,mapping_path.toSortedList())
+    counting_path = Counting(path_annotation,mapping_path.toSortedList({it[-1]}))
 
 }
 
@@ -369,8 +364,8 @@ workflow {
         Channel.fromPath("${params.counting}", checkIfExists:true)
     )
     
-    // figure_path = RNASeq_analysis(counting_path)
-    // figure_path.view()
+    figure_path = RNASeq_analysis(counting_path)
+    figure_path.view()
 
 }
 
