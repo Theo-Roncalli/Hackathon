@@ -346,11 +346,7 @@ workflow RNASeq_analysis {
     main:
     // Peform RNASeq analysis
     deseq_path = Channel.fromPath("templates/differential_analysis.R")
-    metadata_path = (
-        params.metadata == null ?
-        Channel.fromPath("SraRunTable.txt") :
-        Channel.fromPath(params.metadata)
-    )
+    metadata_path = Channel.fromPath(params.metadata)
     figures_path = DESeq(deseq_path, counting_path, metadata_path)
 
 }
