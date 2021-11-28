@@ -209,7 +209,7 @@ process Mapping {
 
     memory params.mapping_memory
     cpus params.mapping_cpus
-    tag "Mapping ${fastq_files[0]} to reference genome index."
+    tag "Mapping ${fastq_files[0]} to reference genome index"
 
     input:
         each fastq_files
@@ -253,7 +253,7 @@ process Counting {
 
 
     cpus params.counting_cpus
-    tag "Counting the number of reads per gene."
+    tag "Counting the number of reads per gene"
 
     input:
     path annotation_path
@@ -331,6 +331,11 @@ workflow RNASeq_quant {
     )
 
     // Create counting matrix
+    mapping_path.toSortedList().view()
+//    mapping_path.toList().view()
+//    sub = { it.substring(5, 19) }
+
+// println list.collect({sub})
     counting_path = Counting(path_annotation,mapping_path.toSortedList())
 
 }
@@ -364,8 +369,8 @@ workflow {
         Channel.fromPath("${params.counting}", checkIfExists:true)
     )
     
-    figure_path = RNASeq_analysis(counting_path)
-    figure_path.view()
+    // figure_path = RNASeq_analysis(counting_path)
+    // figure_path.view()
 
 }
 
