@@ -139,3 +139,9 @@ nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
+.Rproj.user
+.Rhistory
+.RData
+_book
+_bookdown_files
+rsconnect
