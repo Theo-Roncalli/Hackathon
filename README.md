@@ -36,8 +36,8 @@ This pipeline will generate a set of figures, representing differential gene exp
 
 ## Hardware requirements
 
-A machine with at least 32 GB of **FREE** RAM (to create the index on the reference genome).
-Recommended configuration is 64 GB, by default the index creation process is configured to use 50 GB.
+A machine with at least 32 GB of **FREE** RAM (to create the index and the mapping on the reference genome).
+Recommended configuration is 64 GB, by default the mapping process is configured to use 50 GB.
 
 Read more about the setup used to develop this pipeline by reading [the documentation](https://bio-tagi.github.io/Hackathon/).
 
@@ -89,7 +89,7 @@ If you already possess some of the files needed to execute the pipeline, you can
 If unspecified, the pipeline will be executed using default values from the config file : [nextflow.config](https://github.com/bio-TAGI/Hackathon/blob/main/Nextflow/nextflow.config). These too, can be tweaked and overriden:
 
 * `ids` List of SRR accession number to fetch paired-end fastq files. 
-  * default=`['SRR628582', 'SRR628583', 'SRR628584', 'SRR628585', 'SRR628586', 'SRR628587', 'SRR628588', 'SRR628589']`
+  * default `['SRR628582', 'SRR628583', 'SRR628584', 'SRR628585', 'SRR628586', 'SRR628587', 'SRR628588', 'SRR628589']`
 * `genome_url` URL to download the reference genome. 
   *  default `ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz`
 * `annotation_url` URL to donwload the reference genome's annotation. 
