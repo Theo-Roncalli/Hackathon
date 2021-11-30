@@ -115,7 +115,7 @@ dev.off()
 
 res <- results(dds, tidy=TRUE)
 res.condition1 <- subset(res, padj<.1)
-res.condition2 <- subset(res, padj<.001)
+res.condition2 <- subset(res, (padj<.005 & -log10(pvalue) > 6))
 
 plot.volcano <- ggplot(data = res.condition2, aes(x = log2FoldChange, y = -log10(pvalue), label = row)) +
   geom_point(data = res, aes(x = log2FoldChange, y = -log10(pvalue)), color = "black") +
