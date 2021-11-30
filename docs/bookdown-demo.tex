@@ -36,8 +36,8 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={A Minimal Book Example},
-  pdfauthor={Yihui Xie},
+  pdftitle={D I F F R N A : A RNA-Seq analysis pipeline},
+  pdfauthor={Izem Mouhoubi; Théo Roncalli; Gustavo Magaña López},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
@@ -122,9 +122,9 @@
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
-\title{A Minimal Book Example}
-\author{Yihui Xie}
-\date{2021-11-12}
+\title{D I F F R N A : A RNA-Seq analysis pipeline}
+\author{Izem Mouhoubi \and Théo Roncalli \and Gustavo Magaña López}
+\date{2021-11-30}
 
 \begin{document}
 \maketitle
@@ -136,97 +136,165 @@
 \hypertarget{prerequisites}{%
 \chapter{Prerequisites}\label{prerequisites}}
 
-This is a \emph{sample} book written in \textbf{Markdown}. You can use anything that Pandoc's Markdown supports, e.g., a math equation \(a^2 + b^2 = c^2\).
+\hypertarget{hardware-and-operating-system}{%
+\section{Hardware and Operating System}\label{hardware-and-operating-system}}
 
-The \textbf{bookdown} package can be installed from CRAN or Github:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"bookdown"}\NormalTok{)}
-\CommentTok{\# or the development version}
-\CommentTok{\# devtools::install\_github("rstudio/bookdown")}
-\end{Highlighting}
-\end{Shaded}
-
-Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading \texttt{\#}.
-
-To compile this example to PDF, you need XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): \url{https://yihui.name/tinytex/}.
-
-\hypertarget{intro}{%
-\chapter{Introduction}\label{intro}}
-
-You can label chapter and section titles using \texttt{\{\#label\}} after them, e.g., we can reference Chapter \ref{intro}. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \ref{methods}.
-
-Figures and tables with captions will be placed in \texttt{figure} and \texttt{table} environments, respectively.
+The pipeline was developed and tested on \href{https://fridge.ubuntu.com/2021/08/27/ubuntu-20-04-3-lts-released/}{Ubuntu 20.04.3 LTS}
+on top of the \texttt{(GNU/Linux\ 5.4.0-88-generic\ x86\_64)} kernel. The output of the commands \texttt{uname} and \texttt{neofetch} are provided to further detail our configuration.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{par}\NormalTok{(}\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, .}\DecValTok{1}\NormalTok{, .}\DecValTok{1}\NormalTok{))}
-\FunctionTok{plot}\NormalTok{(pressure, }\AttributeTok{type =} \StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\AttributeTok{pch =} \DecValTok{19}\NormalTok{)}
+\ExtensionTok{$}\NormalTok{ uname }\AttributeTok{{-}a}
+\ExtensionTok{Linux}\NormalTok{ machine329a7396{-}059f{-}41aa{-}94c7{-}4c41b4ec8290 5.4.0{-}88{-}generic }\CommentTok{\#99{-}Ubuntu SMP Thu Sep 23 17:29:00 UTC 2021 x86\_64 x86\_64 x86\_64 GNU/Linux}
+
+\ExtensionTok{$}\NormalTok{ neofetch}
+            \ExtensionTok{.{-}/+oossssoo+/{-}.}\NormalTok{               ubuntu@machine3f9ae3dc{-}6a4d{-}46b7{-}8131{-}04f00a1be146 }
+        \KeywordTok{\textasciigrave{}}\BuiltInTok{:}\NormalTok{+ssssssssssssssssss+:}\KeywordTok{\textasciigrave{}}           \AttributeTok{{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}} 
+      \ExtensionTok{{-}+ssssssssssssssssssyyssss+{-}}\NormalTok{         OS: Ubuntu 20.04.3 LTS x86\_64 }
+    \ExtensionTok{.ossssssssssssssssssdMMMNysssso.}\NormalTok{       Host: OpenStack Compute 18.2.1{-}1.el7 }
+   \ExtensionTok{/ssssssssssshdmmNNmmyNMMMMhssssss/}\NormalTok{      Kernel: 5.4.0{-}88{-}generic }
+  \ExtensionTok{+ssssssssshmydMMMMMMMNddddyssssssss+}\NormalTok{     Uptime: 13 hours, 14 mins }
+ \ExtensionTok{/sssssssshNMMMyhhyyyyhmNMMMNhssssssss/}\NormalTok{    Packages: 719 }\ErrorTok{(}\ExtensionTok{dpkg}\KeywordTok{)}\ExtensionTok{,}\NormalTok{ 4 }\ErrorTok{(}\ExtensionTok{snap}\KeywordTok{)} 
+\ExtensionTok{.ssssssssdMMMNhsssssssssshNMMMdssssssss.}\NormalTok{   Shell: bash 5.0.17 }
+\ExtensionTok{+sssshhhyNMMNyssssssssssssyNMMMysssssss+}\NormalTok{   Theme: Adwaita [GTK3] }
+\ExtensionTok{ossyNMMMNyMMhsssssssssssssshmmmhssssssso}\NormalTok{   Icons: Adwaita [GTK3] }
+\ExtensionTok{ossyNMMMNyMMhsssssssssssssshmmmhssssssso}\NormalTok{   Terminal: /dev/pts/0 }
+\ExtensionTok{+sssshhhyNMMNyssssssssssssyNMMMysssssss+}\NormalTok{   CPU: Intel }\ErrorTok{(}\ExtensionTok{Haswell,}\NormalTok{ no TSX, IBRS}\KeywordTok{)} \KeywordTok{(}\ExtensionTok{16}\KeywordTok{)} \ExtensionTok{@}\NormalTok{ 2.294GHz }
+\ExtensionTok{.ssssssssdMMMNhsssssssssshNMMMdssssssss.}\NormalTok{   GPU: 00:02.0 Cirrus Logic GD 5446 }
+ \ExtensionTok{/sssssssshNMMMyhhyyyyhdNMMMNhssssssss/}\NormalTok{    Memory: 635MiB / 64323MiB }
+  \ExtensionTok{+sssssssssdmydMMMMMMMMddddyssssssss+}
+   \ExtensionTok{/ssssssssssshdmNNNNmyNMMMMhssssss/}                              
+    \ExtensionTok{.ossssssssssssssssssdMMMNysssso.}                               
+      \ExtensionTok{{-}+sssssssssssssssssyyyssss+{-}}
+        \KeywordTok{\textasciigrave{}}\BuiltInTok{:}\NormalTok{+ssssssssssssssssss+:}\KeywordTok{\textasciigrave{}}
+            \ExtensionTok{.{-}/+oossssoo+/{-}.}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{figure}
+This configuration was actually a virtual machine hosted on \href{https://biosphere.france-bioinformatique.fr/catalogue/}{Biosphere's RAINBio} a cloud service maintained by the French Institue of Bioinformatics (\href{https://www.france-bioinformatique.fr/en/home/}{\emph{Institut Français de Bioinformatique}}).
 
-{\centering \includegraphics[width=0.8\linewidth]{bookdown-demo_files/figure-latex/nice-fig-1} 
+\hypertarget{biopipes-a-biosphere-commons-app}{%
+\section{BioPipes: a Biosphere-commons app}\label{biopipes-a-biosphere-commons-app}}
 
-}
+The instance of the virtual machine we used is called \href{https://biosphere.france-bioinformatique.fr/catalogue/appliance/119/}{\emph{BioPipes}}. It provides the most notable bioinformatics pipeline tools:
 
-\caption{Here is a nice figure!}\label{fig:nice-fig}
-\end{figure}
+\begin{itemize}
+\tightlist
+\item
+  \href{https://www.nextflow.io/}{nextflow}
+\item
+  \href{https://snakemake.github.io/}{snakemake}
+\item
+  \href{https://www.commonwl.org/}{cwltool}
+\end{itemize}
 
-Reference a figure by its code chunk label with the \texttt{fig:} prefix, e.g., see Figure \ref{fig:nice-fig}. Similarly, you can reference tables generated from \texttt{knitr::kable()}, e.g., see Table \ref{tab:nice-tab}.
+\hypertarget{main-tools}{%
+\section{Main Tools}\label{main-tools}}
+
+Their versions are specified to maximise reproducibility:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}
-  \FunctionTok{head}\NormalTok{(iris, }\DecValTok{20}\NormalTok{), }\AttributeTok{caption =} \StringTok{\textquotesingle{}Here is a nice table!\textquotesingle{}}\NormalTok{,}
-  \AttributeTok{booktabs =} \ConstantTok{TRUE}
-\NormalTok{)}
+\ExtensionTok{$}\NormalTok{ conda }\AttributeTok{{-}{-}version}
+\ExtensionTok{conda}\NormalTok{ 4.11.0}
+\ExtensionTok{$}\NormalTok{ nextflow }\AttributeTok{{-}v}
+\ExtensionTok{nextflow}\NormalTok{ version 21.10.0.5640}
+\ExtensionTok{$}\NormalTok{ docker }\AttributeTok{{-}{-}version}
+\ExtensionTok{Docker}\NormalTok{ version 20.10.11, build dea9396}
 \end{Highlighting}
 \end{Shaded}
 
-\begin{table}
+Detailed information about our development docker installation :
 
-\caption{\label{tab:nice-tab}Here is a nice table!}
-\centering
-\begin{tabular}[t]{rrrrl}
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
-\midrule
-5.1 & 3.5 & 1.4 & 0.2 & setosa\\
-4.9 & 3.0 & 1.4 & 0.2 & setosa\\
-4.7 & 3.2 & 1.3 & 0.2 & setosa\\
-4.6 & 3.1 & 1.5 & 0.2 & setosa\\
-5.0 & 3.6 & 1.4 & 0.2 & setosa\\
-\addlinespace
-5.4 & 3.9 & 1.7 & 0.4 & setosa\\
-4.6 & 3.4 & 1.4 & 0.3 & setosa\\
-5.0 & 3.4 & 1.5 & 0.2 & setosa\\
-4.4 & 2.9 & 1.4 & 0.2 & setosa\\
-4.9 & 3.1 & 1.5 & 0.1 & setosa\\
-\addlinespace
-5.4 & 3.7 & 1.5 & 0.2 & setosa\\
-4.8 & 3.4 & 1.6 & 0.2 & setosa\\
-4.8 & 3.0 & 1.4 & 0.1 & setosa\\
-4.3 & 3.0 & 1.1 & 0.1 & setosa\\
-5.8 & 4.0 & 1.2 & 0.2 & setosa\\
-\addlinespace
-5.7 & 4.4 & 1.5 & 0.4 & setosa\\
-5.4 & 3.9 & 1.3 & 0.4 & setosa\\
-5.1 & 3.5 & 1.4 & 0.3 & setosa\\
-5.7 & 3.8 & 1.7 & 0.3 & setosa\\
-5.1 & 3.8 & 1.5 & 0.3 & setosa\\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{$}\NormalTok{ docker info}
+\ExtensionTok{Server:}
+ \ExtensionTok{Containers:}\NormalTok{ 0}
+  \ExtensionTok{Running:}\NormalTok{ 0}
+  \ExtensionTok{Paused:}\NormalTok{ 0}
+  \ExtensionTok{Stopped:}\NormalTok{ 0}
+ \ExtensionTok{Images:}\NormalTok{ 4}
+ \ExtensionTok{Server}\NormalTok{ Version: 20.10.11}
+ \ExtensionTok{Storage}\NormalTok{ Driver: overlay2}
+  \ExtensionTok{Backing}\NormalTok{ Filesystem: xfs}
+  \ExtensionTok{Supports}\NormalTok{ d\_type: true}
+  \ExtensionTok{Native}\NormalTok{ Overlay Diff: true}
+  \ExtensionTok{userxattr:}\NormalTok{ false}
+ \ExtensionTok{Logging}\NormalTok{ Driver: json{-}file}
+ \ExtensionTok{Cgroup}\NormalTok{ Driver: cgroupfs}
+ \ExtensionTok{Cgroup}\NormalTok{ Version: 1}
+ \ExtensionTok{Plugins:}
+  \ExtensionTok{Volume:}\NormalTok{ local}
+  \ExtensionTok{Network:}\NormalTok{ bridge host ipvlan macvlan null overlay}
+  \ExtensionTok{Log:}\NormalTok{ awslogs fluentd gcplogs gelf journald json{-}file local logentries splunk syslog}
+ \ExtensionTok{Swarm:}\NormalTok{ inactive}
+ \ExtensionTok{Runtimes:}\NormalTok{ io.containerd.runc.v2 io.containerd.runtime.v1.linux runc}
+ \ExtensionTok{Default}\NormalTok{ Runtime: runc}
+ \ExtensionTok{Init}\NormalTok{ Binary: docker{-}init}
+ \ExtensionTok{containerd}\NormalTok{ version: 7b11cfaabd73bb80907dd23182b9347b4245eb5d}
+ \ExtensionTok{runc}\NormalTok{ version: v1.0.2{-}0{-}g52b36a2}
+ \ExtensionTok{init}\NormalTok{ version: de40ad0}
+ \ExtensionTok{Security}\NormalTok{ Options:}
+  \ExtensionTok{apparmor}
+  \ExtensionTok{seccomp}
+   \ExtensionTok{Profile:}\NormalTok{ default}
+ \ExtensionTok{Kernel}\NormalTok{ Version: 5.4.0{-}88{-}generic}
+ \ExtensionTok{Operating}\NormalTok{ System: Ubuntu 20.04.3 LTS}
+ \ExtensionTok{OSType:}\NormalTok{ linux}
+ \ExtensionTok{Architecture:}\NormalTok{ x86\_64}
+ \ExtensionTok{CPUs:}\NormalTok{ 16}
+ \ExtensionTok{Total}\NormalTok{ Memory: 62.82GiB}
+ \ExtensionTok{Name:}\NormalTok{ machine3f9ae3dc{-}6a4d{-}46b7{-}8131{-}04f00a1be146}
+ \ExtensionTok{ID:}\NormalTok{ XT4Y:2HUL:HXEA:CDXV:ERC7:Z7JZ:YYRU:WZBT:ERCU:6GGA:OBZ6:QLXE}
+ \ExtensionTok{Docker}\NormalTok{ Root Dir: /mnt/docker{-}data}
+ \ExtensionTok{Debug}\NormalTok{ Mode: false}
+ \ExtensionTok{Registry:}\NormalTok{ https://index.docker.io/v1/}
+ \ExtensionTok{Labels:}
+ \ExtensionTok{Experimental:}\NormalTok{ false}
+ \ExtensionTok{Insecure}\NormalTok{ Registries:}
+  \ExtensionTok{127.0.0.0/8}
+ \ExtensionTok{Live}\NormalTok{ Restore Enabled: false}
+\end{Highlighting}
+\end{Shaded}
 
-You can write citations, too. For example, we are using the \textbf{bookdown} package \citep{R-bookdown} in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015}.
+\hypertarget{dependencies}{%
+\chapter{Dependencies}\label{dependencies}}
 
-\hypertarget{literature}{%
-\chapter{Literature}\label{literature}}
+\hypertarget{software}{%
+\section{Software}\label{software}}
 
-Here is a review of existing methods.
+The pipeline runs on \href{https://www.nextflow.io/}{nextflow} a domain-specific language created to automate data-analysis pipelines whilst maximising reproducibility.
+Nextflow enables scientists to focus on their analyses, isolating different parts of the pipeline into processes whose dependencies can be dealt with using containers and virtual environments with technologies such as \href{https://www.docker.com/}{Docker}, \href{https://singularity.hpcng.org/}{Singularity}, and \href{https://www.anaconda.com/products/individual}{Anaconda}.
+
+The recommended way to install \texttt{nextflow} is via \texttt{conda}, using \href{https://github.com/bio-TAGI/Hackathon/blob/main/nextflow_conda_env.yml}{the environment file}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{conda}\NormalTok{ env create }\AttributeTok{{-}f}\NormalTok{ nextflow\_conda\_env.yml }\CommentTok{\# will create an env called "nextflow"}
+\ExtensionTok{conda}\NormalTok{ activate nextflow}
+\CommentTok{\# You can edit the file at your choice, specially if the environment name conflicts}
+\CommentTok{\# with a preexisting conda env on your system}
+\end{Highlighting}
+\end{Shaded}
+
+Docker should be installed as well:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sudo}\NormalTok{ apt install docker}
+\end{Highlighting}
+\end{Shaded}
+
+Once nexflow is installed, it will automatically retrieve the docker images used within the pipeline.
+
+\hypertarget{workflow}{%
+\chapter{Workflow}\label{workflow}}
+
+Nextflow workflows should form a \emph{DAG} (i.e.~directed acyclic graph), which represents the flow of data through the different steps
+required to produce the final result.
+
+This pipeline will generate a set of figures, representing differential gene expression analysis of RNA-Seq data.
 
 \hypertarget{methods}{%
 \chapter{Methods}\label{methods}}

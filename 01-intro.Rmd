@@ -1,21 +1,21 @@
-# Introduction {#intro}
+# Dependencies
 
-You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
+## Software
 
-Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
+The pipeline runs on [nextflow](https://www.nextflow.io/) a domain-specific language created to automate data-analysis pipelines whilst maximising reproducibility.
+Nextflow enables scientists to focus on their analyses, isolating different parts of the pipeline into processes whose dependencies can be dealt with using containers and virtual environments with technologies such as [Docker](https://www.docker.com/), [Singularity](https://singularity.hpcng.org/), and [Anaconda](https://www.anaconda.com/products/individual).
 
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
+The recommended way to install `nextflow` is via `conda`, using [the environment file](https://github.com/bio-TAGI/Hackathon/blob/main/nextflow_conda_env.yml).
+```bash
+conda env create -f nextflow_conda_env.yml # will create an env called "nextflow"
+conda activate nextflow
+# You can edit the file at your choice, specially if the environment name conflicts
+# with a preexisting conda env on your system
 ```
 
-Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
-
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(iris, 20), caption = 'Here is a nice table!',
-  booktabs = TRUE
-)
+Docker should be installed as well:
+```bash
+sudo apt install docker
 ```
 
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+Once nexflow is installed, it will automatically retrieve the docker images used within the pipeline.

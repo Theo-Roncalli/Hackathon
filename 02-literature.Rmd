@@ -1,3 +1,6 @@
-# Literature
+# Workflow
 
-Here is a review of existing methods.
+Nextflow workflows should form a _DAG_ (i.e. directed acyclic graph), which represents the flow of data through the different steps 
+required to produce the final result. 
+
+This pipeline will generate a set of figures, representing differential gene expression analysis of RNA-Seq data.

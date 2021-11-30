@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Methods | D I F F R N A : A RNA-Seq analysis pipeline</title>
+  <title>Chapter 2 Dependencies | D I F F R N A : A RNA-Seq analysis pipeline</title>
   <meta name="description" content="Documentation for the NEXTFLOW pipeline ‘DIFFRNA’ v0.1.0" />
   <meta name="generator" content="bookdown 0.22.3 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Methods | D I F F R N A : A RNA-Seq analysis pipeline" />
+  <meta property="og:title" content="Chapter 2 Dependencies | D I F F R N A : A RNA-Seq analysis pipeline" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="bio-TAGI/Hackathon" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Methods | D I F F R N A : A RNA-Seq analysis pipeline" />
+  <meta name="twitter:title" content="Chapter 2 Dependencies | D I F F R N A : A RNA-Seq analysis pipeline" />
   
   <meta name="twitter:description" content="Documentation for the NEXTFLOW pipeline ‘DIFFRNA’ v0.1.0" />
   
@@ -33,8 +33,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="workflow.html"/>
-<link rel="next" href="applications.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="workflow.html"/>
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -181,38 +181,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="methods" class="section level1" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Methods</h1>
-<p>We describe our methods in this chapter.</p>
-<p>Math can be added in body using usual syntax like this</p>
-<div id="math-example" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> math example</h2>
-<p><span class="math inline">\(p\)</span> is unknown but expected to be around 1/3. Standard error will be approximated</p>
-<p><span class="math display">\[
-SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-\]</span></p>
-<p>You can also use math in footnotes like this<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
-<p>We will approximate standard error to 0.027<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<div id="dependencies" class="section level1" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Dependencies</h1>
+<div id="software" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Software</h2>
+<p>The pipeline runs on <a href="https://www.nextflow.io/">nextflow</a> a domain-specific language created to automate data-analysis pipelines whilst maximising reproducibility.
+Nextflow enables scientists to focus on their analyses, isolating different parts of the pipeline into processes whose dependencies can be dealt with using containers and virtual environments with technologies such as <a href="https://www.docker.com/">Docker</a>, <a href="https://singularity.hpcng.org/">Singularity</a>, and <a href="https://www.anaconda.com/products/individual">Anaconda</a>.</p>
+<p>The recommended way to install <code>nextflow</code> is via <code>conda</code>, using <a href="https://github.com/bio-TAGI/Hackathon/blob/main/nextflow_conda_env.yml">the environment file</a>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="dependencies.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-f</span> nextflow_conda_env.yml <span class="co"># will create an env called &quot;nextflow&quot;</span></span>
+<span id="cb4-2"><a href="dependencies.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate nextflow</span>
+<span id="cb4-3"><a href="dependencies.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># You can edit the file at your choice, specially if the environment name conflicts</span></span>
+<span id="cb4-4"><a href="dependencies.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># with a preexisting conda env on your system</span></span></code></pre></div>
+<p>Docker should be installed as well:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="dependencies.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install docker</span></code></pre></div>
+<p>Once nexflow is installed, it will automatically retrieve the docker images used within the pipeline.</p>
 
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="1">
-<li id="fn1"><p>where we mention <span class="math inline">\(p = \frac{a}{b}\)</span><a href="methods.html#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p><span class="math inline">\(p\)</span> is unknown but expected to be around 1/3. Standard error will be approximated</p>
-<p><span class="math display">\[
-SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-\]</span><a href="methods.html#fnref2" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="workflow.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="applications.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="workflow.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -244,7 +236,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-method.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-intro.Rmd",
 "text": "Edit"
 },
 "history": {
