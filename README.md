@@ -67,10 +67,10 @@ nextflow run main.nf --param1 value1\
 
 ### Optional parameters
 
-* `index_cpus` (number of cpus reserved for the genome indexation process,   `default=14`)
-* `mapping_cpus` (idem. for the mapping process, used to create BAM files, `default=14`)
+* `index_cpus` (number of cpus reserved for the genome indexation process.   `default=14`)
+* `mapping_cpus` (idem. for the mapping process, used to create BAM files. `default=14`)
 * `counting_cpus` (idem. for the counting process. `default=7`)
-* `mapping_memory` (RAM reserved for mapping . `default=50GB`)
+* `mapping_memory` (RAM reserved for mapping. `default=50GB`)
 
 
 If you already possess some of the files needed to execute the pipeline, you can specify them as follows:
@@ -90,7 +90,7 @@ If unspecified, the pipeline will be executed using default values from the conf
   *  default `ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz`
 * `annotation_url` URL to donwload the reference genome's annotation. 
   * default `ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr.gtf.gz`
-* `sjdbOverhang` (a STAR-specific parameter, `default=99`)
+* `sjdbOverhang` (a STAR-specific parameter. `default=99`)
   * For further information about this parameter, see [this tutorial](https://sydney-informatics-hub.github.io/training-RNAseq/02-BuildAGenomeIndex/index.html), 
   or the [STAR manual](https://physiology.med.cornell.edu/faculty/skrabanek/lab/angsd/lecture_notes/STARmanual.pdf).
 
