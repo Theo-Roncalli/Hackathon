@@ -5,9 +5,6 @@ main-tools
 dependencies
 software
 workflow
-methods
-math-example
-applications
-example-one
-example-two
-final-words
+execution
+parameters
+caveats

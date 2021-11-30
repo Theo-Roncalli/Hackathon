@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Final Words | D I F F R N A : A RNA-Seq analysis pipeline</title>
+  <title>Chapter 6 Caveats | D I F F R N A : A RNA-Seq analysis pipeline</title>
   <meta name="description" content="Documentation for the NEXTFLOW pipeline ‘DIFFRNA’ v0.1.0" />
   <meta name="generator" content="bookdown 0.22.3 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Final Words | D I F F R N A : A RNA-Seq analysis pipeline" />
+  <meta property="og:title" content="Chapter 6 Caveats | D I F F R N A : A RNA-Seq analysis pipeline" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="bio-TAGI/Hackathon" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Final Words | D I F F R N A : A RNA-Seq analysis pipeline" />
+  <meta name="twitter:title" content="Chapter 6 Caveats | D I F F R N A : A RNA-Seq analysis pipeline" />
   
   <meta name="twitter:description" content="Documentation for the NEXTFLOW pipeline ‘DIFFRNA’ v0.1.0" />
   
@@ -152,7 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> Workflow</a></li>
 <li class="chapter" data-level="4" data-path="execution.html"><a href="execution.html"><i class="fa fa-check"></i><b>4</b> Execution</a></li>
 <li class="chapter" data-level="5" data-path="parameters.html"><a href="parameters.html"><i class="fa fa-check"></i><b>5</b> Parameters</a></li>
-<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="6" data-path="caveats.html"><a href="caveats.html"><i class="fa fa-check"></i><b>6</b> Caveats</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -174,9 +174,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="final-words" class="section level1" number="6">
-<h1><span class="header-section-number">Chapter 6</span> Final Words</h1>
-<p>We have finished a nice book.</p>
+<div id="caveats" class="section level1" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Caveats</h1>
+<ul>
+<li>A good internet connection is required. Retrieving <code>fastq</code> can be really slow and is thus a bottleneck.</li>
+<li><a href="https://github.com/ncbi/sra-tools/wiki"><code>fasterq-dump</code></a> will randomly segfault.
+At first we thought this was caused by connection problems, but running <code>ping</code> ruled this out. Apparently, the segfault is <a href="https://github.com/ncbi/sra-tools/issues/518">a known issue</a>.</li>
+<li>The workflow will inevitably fail if you try building the genome’s index on a machine with less than ~30 GB of RAM available.
+<ul>
+<li>As a general rule, tweak all parameters to reasonable values that fit your setup and needs. We don’t know your hardware, you do ;)</li>
+</ul></li>
+</ul>
 
 </div>
             </section>

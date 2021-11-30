@@ -1,3 +1,7 @@
-# Final Words
+# Caveats
 
-We have finished a nice book.
+* A good internet connection is required. Retrieving `fastq` can be really slow and is thus a bottleneck.
+* [`fasterq-dump`](https://github.com/ncbi/sra-tools/wiki) will randomly segfault. 
+At first we thought this was caused by connection problems, but running `ping` ruled this out. Apparently, the segfault is [a known issue](https://github.com/ncbi/sra-tools/issues/518).
+* The workflow will inevitably fail if you try building the genome's index on a machine with less than ~30 GB of RAM available.
+  * As a general rule, tweak all parameters to reasonable values that fit your setup and needs. We don't know your hardware, you do ;)

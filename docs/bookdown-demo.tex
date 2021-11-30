@@ -124,7 +124,7 @@
 
 \title{D I F F R N A : A RNA-Seq analysis pipeline}
 \author{Izem Mouhoubi \and Théo Roncalli \and Gustavo Magaña López}
-\date{2021-11-30}
+\date{2021-11-29}
 
 \begin{document}
 \maketitle
@@ -286,7 +286,7 @@ Docker should be installed as well:
 \end{Highlighting}
 \end{Shaded}
 
-Once nexflow is installed, it will automatically retrieve the docker images used within the pipeline.
+Once nextflow is installed, it will automatically retrieve the docker images used within the pipeline.
 
 \hypertarget{workflow}{%
 \chapter{Workflow}\label{workflow}}
@@ -294,49 +294,178 @@ Once nexflow is installed, it will automatically retrieve the docker images used
 Nextflow workflows should form a \emph{DAG} (i.e.~directed acyclic graph), which represents the flow of data through the different steps
 required to produce the final result.
 
-\includegraphics{images/biotagi.png}
+\includegraphics{images/dag.png}
 
 This pipeline will generate a set of figures, representing differential gene expression analysis of RNA-Seq data.
 
-\hypertarget{methods}{%
-\chapter{Methods}\label{methods}}
+\hypertarget{execution}{%
+\chapter{Execution}\label{execution}}
 
-We describe our methods in this chapter.
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Clone the repo to your machine
+\end{enumerate}
 
-Math can be added in body using usual syntax like this
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ clone https://github.com/bio{-}TAGI/Hackathon.git}
+\BuiltInTok{cd}\NormalTok{ Hackathon}
+\end{Highlighting}
+\end{Shaded}
 
-\hypertarget{math-example}{%
-\section{math example}\label{math-example}}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Create and activate the virtual environment
+\end{enumerate}
 
-\(p\) is unknown but expected to be around 1/3. Standard error will be approximated
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{conda}\NormalTok{ env create }\AttributeTok{{-}f}\NormalTok{ nextflow\_conda\_env.yml}
+\ExtensionTok{conda}\NormalTok{ activate nextflow}
+\end{Highlighting}
+\end{Shaded}
 
-\[
-SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-\]
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Run the wokflow with default parameters.
+\end{enumerate}
 
-You can also use math in footnotes like this\footnote{where we mention \(p = \frac{a}{b}\)}.
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd}\NormalTok{ Nextflow}
+\ExtensionTok{nextflow}\NormalTok{ run main.nf}
+\end{Highlighting}
+\end{Shaded}
 
-We will approximate standard error to 0.027\footnote{\(p\) is unknown but expected to be around 1/3. Standard error will be approximated
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  If you had to stop the workflow run, or if some error occurred, you can always resume the execution as follows:
+\end{enumerate}
 
-  \[
-  SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-  \]}
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{nextflow}\NormalTok{ run main.nf }\AttributeTok{{-}resume}
+\end{Highlighting}
+\end{Shaded}
 
-\hypertarget{applications}{%
-\chapter{Applications}\label{applications}}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Specifying parameters from the command line
+\end{enumerate}
 
-Some \emph{significant} applications are demonstrated in this chapter.
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{nextflow}\NormalTok{ run main.nf }\AttributeTok{{-}{-}param1}\NormalTok{ value1}\DataTypeTok{\textbackslash{}}
+\NormalTok{{-}{-}param2 value2}\DataTypeTok{\textbackslash{}}
+\NormalTok{{-}{-}paramn valuen }\CommentTok{\# these are generic names, not actual parameters for the pipeline}
+\end{Highlighting}
+\end{Shaded}
 
-\hypertarget{example-one}{%
-\section{Example one}\label{example-one}}
+\hypertarget{parameters}{%
+\chapter{Parameters}\label{parameters}}
 
-\hypertarget{example-two}{%
-\section{Example two}\label{example-two}}
+\begin{itemize}
+\tightlist
+\item
+  \texttt{index\_cpus} (number of cpus reserved for the genome indexation process. \texttt{default=14})
+\item
+  \texttt{mapping\_cpus} (idem. for the mapping process, used to create BAM files. \texttt{default=14})
+\item
+  \texttt{counting\_cpus} (idem. for the counting process. \texttt{default=7})
+\item
+  \texttt{mapping\_memory} (RAM reserved for mapping. \texttt{default=50GB})
+\end{itemize}
 
-\hypertarget{final-words}{%
-\chapter{Final Words}\label{final-words}}
+If you already possess some of the files needed to execute the pipeline, you can specify them as follows:
 
-We have finished a nice book.
+\begin{itemize}
+\tightlist
+\item
+  \texttt{reads} (path pointing to a directory containing the \texttt{fasterq} files)
+\item
+  \texttt{genome} (path pointing to a directory containing the genome FASTA file)
+\item
+  \texttt{index} (Répertoire contenant les fichiers d'index)
+\item
+  \texttt{mapping} (Répertoire contenant les fichiers BAM)
+\item
+  \texttt{counting} (Chemin d'accès entier au fichier de comptage -- comprend le fichier lui-même)
+\item
+  \texttt{metadata} (Chemin d'accès entier au fichier de métadonnées -- comprend le fichier lui-même)
+\end{itemize}
+
+If unspecified, the pipeline will be executed using default values from the config file : \href{https://github.com/bio-TAGI/Hackathon/blob/main/Nextflow/nextflow.config}{nextflow.config}. These too, can be tweaked and overriden:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{ids} List of SRR accession number to fetch paired-end fastq files.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    default=\texttt{{[}\textquotesingle{}SRR628582\textquotesingle{},\ \textquotesingle{}SRR628583\textquotesingle{},\ \textquotesingle{}SRR628584\textquotesingle{},\ \textquotesingle{}SRR628585\textquotesingle{},\ \textquotesingle{}SRR628586\textquotesingle{},\ \textquotesingle{}SRR628587\textquotesingle{},\ \textquotesingle{}SRR628588\textquotesingle{},\ \textquotesingle{}SRR628589\textquotesingle{}{]}}
+  \end{itemize}
+\item
+  \texttt{genome\_url} URL to download the reference genome.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    default \texttt{ftp://ftp.ensembl.org/pub/release-101/fasta/homo\_sapiens/dna/Homo\_sapiens.GRCh38.dna.primary\_assembly.fa.gz}
+  \end{itemize}
+\item
+  \texttt{annotation\_url} URL to donwload the reference genome's annotation.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    default \texttt{ftp://ftp.ensembl.org/pub/release-101/gtf/homo\_sapiens/Homo\_sapiens.GRCh38.101.chr.gtf.gz}
+  \end{itemize}
+\item
+  \texttt{sjdbOverhang} (a STAR-specific parameter. \texttt{default=99})
+
+  \begin{itemize}
+  \tightlist
+  \item
+    For further information about this parameter, see \href{https://sydney-informatics-hub.github.io/training-RNAseq/02-BuildAGenomeIndex/index.html}{this tutorial},
+    or the \href{https://physiology.med.cornell.edu/faculty/skrabanek/lab/angsd/lecture_notes/STARmanual.pdf}{STAR manual}.
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{caveats}{%
+\chapter{Caveats}\label{caveats}}
+
+\begin{itemize}
+\tightlist
+\item
+  A good internet connection is required. Retrieving \texttt{fastq} can be really slow and is thus a bottleneck.
+\item
+  \href{https://github.com/ncbi/sra-tools/wiki}{\texttt{fasterq-dump}} will randomly segfault.
+  At first we thought this was caused by connection problems, but running \texttt{ping} ruled this out. Apparently, the segfault is \href{https://github.com/ncbi/sra-tools/issues/518}{a known issue}.
+\item
+  The workflow will inevitably fail if you try building the genome's index on a machine with less than \textasciitilde30 GB of RAM available.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    As a general rule, tweak all parameters to reasonable values that fit your setup and needs. We don't know your hardware, you do ;)
+  \end{itemize}
+\end{itemize}
 
   \bibliography{book.bib,packages.bib}
 

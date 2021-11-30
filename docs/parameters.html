@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 6 Final Words | D I F F R N A : A RNA-Seq analysis pipeline</title>
+  <title>Chapter 5 Parameters | D I F F R N A : A RNA-Seq analysis pipeline</title>
   <meta name="description" content="Documentation for the NEXTFLOW pipeline ‘DIFFRNA’ v0.1.0" />
   <meta name="generator" content="bookdown 0.22.3 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 6 Final Words | D I F F R N A : A RNA-Seq analysis pipeline" />
+  <meta property="og:title" content="Chapter 5 Parameters | D I F F R N A : A RNA-Seq analysis pipeline" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="bio-TAGI/Hackathon" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 6 Final Words | D I F F R N A : A RNA-Seq analysis pipeline" />
+  <meta name="twitter:title" content="Chapter 5 Parameters | D I F F R N A : A RNA-Seq analysis pipeline" />
   
   <meta name="twitter:description" content="Documentation for the NEXTFLOW pipeline ‘DIFFRNA’ v0.1.0" />
   
@@ -33,8 +33,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="parameters.html"/>
-<link rel="next" href="references.html"/>
+<link rel="prev" href="execution.html"/>
+<link rel="next" href="caveats.html"/>
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -152,7 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> Workflow</a></li>
 <li class="chapter" data-level="4" data-path="execution.html"><a href="execution.html"><i class="fa fa-check"></i><b>4</b> Execution</a></li>
 <li class="chapter" data-level="5" data-path="parameters.html"><a href="parameters.html"><i class="fa fa-check"></i><b>5</b> Parameters</a></li>
-<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="6" data-path="caveats.html"><a href="caveats.html"><i class="fa fa-check"></i><b>6</b> Caveats</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -174,9 +174,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="final-words" class="section level1" number="6">
-<h1><span class="header-section-number">Chapter 6</span> Final Words</h1>
-<p>We have finished a nice book.</p>
+<div id="parameters" class="section level1" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Parameters</h1>
+<ul>
+<li><code>index_cpus</code> (number of cpus reserved for the genome indexation process. <code>default=14</code>)</li>
+<li><code>mapping_cpus</code> (idem. for the mapping process, used to create BAM files. <code>default=14</code>)</li>
+<li><code>counting_cpus</code> (idem. for the counting process. <code>default=7</code>)</li>
+<li><code>mapping_memory</code> (RAM reserved for mapping. <code>default=50GB</code>)</li>
+</ul>
+<p>If you already possess some of the files needed to execute the pipeline, you can specify them as follows:</p>
+<ul>
+<li><code>reads</code> (path pointing to a directory containing the <code>fasterq</code> files)</li>
+<li><code>genome</code> (path pointing to a directory containing the genome FASTA file)</li>
+<li><code>index</code> (Répertoire contenant les fichiers d’index)</li>
+<li><code>mapping</code> (Répertoire contenant les fichiers BAM)</li>
+<li><code>counting</code> (Chemin d’accès entier au fichier de comptage – comprend le fichier lui-même)</li>
+<li><code>metadata</code> (Chemin d’accès entier au fichier de métadonnées – comprend le fichier lui-même)</li>
+</ul>
+<p>If unspecified, the pipeline will be executed using default values from the config file : <a href="https://github.com/bio-TAGI/Hackathon/blob/main/Nextflow/nextflow.config">nextflow.config</a>. These too, can be tweaked and overriden:</p>
+<ul>
+<li><code>ids</code> List of SRR accession number to fetch paired-end fastq files.
+<ul>
+<li>default=<code>['SRR628582', 'SRR628583', 'SRR628584', 'SRR628585', 'SRR628586', 'SRR628587', 'SRR628588', 'SRR628589']</code></li>
+</ul></li>
+<li><code>genome_url</code> URL to download the reference genome.
+<ul>
+<li>default <code>ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz</code></li>
+</ul></li>
+<li><code>annotation_url</code> URL to donwload the reference genome’s annotation.
+<ul>
+<li>default <code>ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr.gtf.gz</code></li>
+</ul></li>
+<li><code>sjdbOverhang</code> (a STAR-specific parameter. <code>default=99</code>)
+<ul>
+<li>For further information about this parameter, see <a href="https://sydney-informatics-hub.github.io/training-RNAseq/02-BuildAGenomeIndex/index.html">this tutorial</a>,
+or the <a href="https://physiology.med.cornell.edu/faculty/skrabanek/lab/angsd/lecture_notes/STARmanual.pdf">STAR manual</a>.</li>
+</ul></li>
+</ul>
 
 </div>
             </section>
@@ -184,8 +218,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="parameters.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="execution.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="caveats.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -217,7 +251,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-summary.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-application.Rmd",
 "text": "Edit"
 },
 "history": {

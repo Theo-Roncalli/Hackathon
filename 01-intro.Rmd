@@ -18,4 +18,4 @@ Docker should be installed as well:
 sudo apt install docker
 ```
 
-Once nexflow is installed, it will automatically retrieve the docker images used within the pipeline.
+Once nextflow is installed, it will automatically retrieve the docker images used within the pipeline.

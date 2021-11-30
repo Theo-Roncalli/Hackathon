@@ -4,7 +4,7 @@ author:
   - Izem Mouhoubi
   - Théo Roncalli
   - Gustavo Magaña López
-date: "`r Sys.Date()`"
+date: "2021-11-29"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
