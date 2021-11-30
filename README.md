@@ -1,4 +1,5 @@
 # Hackaton
+<a href='https://github.com/bio-TAGI/'><img src='https://github.com/bio-TAGI/Hackathon/blob/gh-pages/docs/biotagi.png' align="right" height="135" /></a>
 
 Analysis of mutations at codon 625 of SF3B1 gene in uveal melanoma.
 
@@ -81,7 +82,7 @@ If you already possess some of the files needed to execute the pipeline, you can
 * `counting` (Chemin d’accès entier au fichier de comptage – comprend le fichier lui-même)
 * `metadata` (Chemin d’accès entier au fichier de métadonnées – comprend le fichier lui-même)
 
-If unspecified, they will these files will be downloaded following the default values from the config file : [nextflow.config](https://github.com/bio-TAGI/Hackathon/blob/main/Nextflow/nextflow.config). These too, can be tweaked and overriden:
+If unspecified, the pipeline will be executed using default values from the config file : [nextflow.config](https://github.com/bio-TAGI/Hackathon/blob/main/Nextflow/nextflow.config). These too, can be tweaked and overriden:
 
 * `ids` List of SRR accession number to fetch paired-end fastq files. 
   * default=`['SRR628582', 'SRR628583', 'SRR628584', 'SRR628585', 'SRR628586', 'SRR628587', 'SRR628588', 'SRR628589']`
@@ -89,6 +90,9 @@ If unspecified, they will these files will be downloaded following the default v
   *  default `ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz`
 * `annotation_url` URL to donwload the reference genome's annotation. 
   * default `ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr.gtf.gz`
+* `sjdbOverhang` (a STAR-specific parameter, `default=99`)
+  * For further information about this parameter, see [this tutorial](https://sydney-informatics-hub.github.io/training-RNAseq/02-BuildAGenomeIndex/index.html), 
+  or the [STAR manual](https://physiology.med.cornell.edu/faculty/skrabanek/lab/angsd/lecture_notes/STARmanual.pdf).
 
 ## Caveats
 
