@@ -1,9 +1,3 @@
-/* nextflow run main.nf --reads ../Data/Reads --genome ../Data/Genome --index ../Data/Index --mapping ../Data/Mapping \
---index_cpus 7 \
---mapping_cpus 7 \
---mapping_memory '12GB'
-*/
-
 /*
     Nexflow pipeline to perform a full RNA-seq analysis (differential expression)
     from a series of SRA accession numbers and a reference genome.
@@ -365,4 +359,3 @@ workflow {
 
 }
 
-// nextflow run main.nf --counting ../Data/Counts/counts.txt
