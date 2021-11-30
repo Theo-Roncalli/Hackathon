@@ -15,6 +15,13 @@ conda activate nextflow
 # with a preexisting conda env on your system
 ```
 
+Docker should be installed as well:
+```bash
+sudo apt install docker
+```
+
+Once nexflow is installed, it will automatically retrieve the docker images used within the pipeline.
+
 ## Workflow DAG
 
 Nextflow workflows should form a _DAG_ (i.e. directed acyclic graph), which represents the flow of data through the different steps 
@@ -26,10 +33,22 @@ This pipeline will generate a set of figures, representing differential gene exp
 
 ## Hardware requirements
 
-The workflow
+## Executing The Workflow
 
+1. Clone the repo to your machine
+```bash
+git clone https://github.com/bio-TAGI/Hackathon.git
+cd Hackathon
 ```
-nextflow run nextflow/main.nf
+2. Create and activate the virtual environment
+```bash
+conda env create -f nextflow_conda_env.yml
+conda activate nextflow
+```
+3. nextflow run nextflow/main.nf
+```bash
+cd Nextflow
+nextflow run main.nf
 ```
 
 ## Caveats
@@ -37,4 +56,5 @@ nextflow run nextflow/main.nf
 * A good internet connection is required. Retrieving `fastq` can be really slow and is thus a bottleneck.
 * [`fasterq-dump`](https://github.com/ncbi/sra-tools/wiki) will randomly segfault. 
 At first we thought this was caused by connection problems, but running `ping` ruled this out. Apparently, the segfault is [a known issue](https://github.com/ncbi/sra-tools/issues/518).
+* The workflow will inevitably fail if you try building the genome's index on a machine with less than ~30 GB of RAM available.
 
