@@ -1,7 +1,9 @@
 # Hackaton
 <a href='https://github.com/bio-TAGI/'><img src='https://github.com/bio-TAGI/Hackathon/blob/gh-pages/docs/biotagi.png' align="right" height="135" /></a>
 
-Analysis of mutations at codon 625 of SF3B1 gene in uveal melanoma.
+Analysis of mutations at codon 625 of SF3B1 gene in uveal melanoma. 
+
+A slightly enhanced version of this file is available in gitbook, pdf, and epub formats [here](https://bio-tagi.github.io/Hackathon/).
 
 ## Dependencies
 
@@ -36,6 +38,8 @@ This pipeline will generate a set of figures, representing differential gene exp
 
 A machine with at least 32 GB of **FREE** RAM (to create the index on the reference genome).
 Recommended configuration is 64 GB, by default the index creation process is configured to use 50 GB.
+
+Read more about the setup used to develop this pipeline by reading [the documentation](https://bio-tagi.github.io/Hackathon/).
 
 ## Executing The Workflow
 
