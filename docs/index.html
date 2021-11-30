@@ -145,10 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#biopipes-a-biosphere-commons-app"><i class="fa fa-check"></i><b>1.2</b> BioPipes: a Biosphere-commons app</a></li>
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#main-tools"><i class="fa fa-check"></i><b>1.3</b> Main Tools</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="dependencies.html"><a href="dependencies.html"><i class="fa fa-check"></i><b>2</b> Dependencies</a>
-<ul>
-<li class="chapter" data-level="2.1" data-path="dependencies.html"><a href="dependencies.html#software"><i class="fa fa-check"></i><b>2.1</b> Software</a></li>
-</ul></li>
+<li class="chapter" data-level="2" data-path="dependencies.html"><a href="dependencies.html"><i class="fa fa-check"></i><b>2</b> Dependencies</a></li>
 <li class="chapter" data-level="3" data-path="workflow.html"><a href="workflow.html"><i class="fa fa-check"></i><b>3</b> Workflow</a></li>
 <li class="chapter" data-level="4" data-path="execution.html"><a href="execution.html"><i class="fa fa-check"></i><b>4</b> Execution</a></li>
 <li class="chapter" data-level="5" data-path="parameters.html"><a href="parameters.html"><i class="fa fa-check"></i><b>5</b> Parameters</a></li>
@@ -233,52 +230,60 @@ on top of the <code>(GNU/Linux 5.4.0-88-generic x86_64)</code> kernel. The outpu
 <span id="cb2-6"><a href="index.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Docker</span> version 20.10.11, build dea9396</span></code></pre></div>
 <p>Detailed information about our development docker installation :</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> docker info</span>
-<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Server:</span></span>
-<span id="cb3-3"><a href="index.html#cb3-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">Containers:</span> 0</span>
-<span id="cb3-4"><a href="index.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Running:</span> 0</span>
-<span id="cb3-5"><a href="index.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Paused:</span> 0</span>
-<span id="cb3-6"><a href="index.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Stopped:</span> 0</span>
-<span id="cb3-7"><a href="index.html#cb3-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">Images:</span> 4</span>
-<span id="cb3-8"><a href="index.html#cb3-8" aria-hidden="true" tabindex="-1"></a> <span class="ex">Server</span> Version: 20.10.11</span>
-<span id="cb3-9"><a href="index.html#cb3-9" aria-hidden="true" tabindex="-1"></a> <span class="ex">Storage</span> Driver: overlay2</span>
-<span id="cb3-10"><a href="index.html#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Backing</span> Filesystem: xfs</span>
-<span id="cb3-11"><a href="index.html#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Supports</span> d_type: true</span>
-<span id="cb3-12"><a href="index.html#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Native</span> Overlay Diff: true</span>
-<span id="cb3-13"><a href="index.html#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">userxattr:</span> false</span>
-<span id="cb3-14"><a href="index.html#cb3-14" aria-hidden="true" tabindex="-1"></a> <span class="ex">Logging</span> Driver: json-file</span>
-<span id="cb3-15"><a href="index.html#cb3-15" aria-hidden="true" tabindex="-1"></a> <span class="ex">Cgroup</span> Driver: cgroupfs</span>
-<span id="cb3-16"><a href="index.html#cb3-16" aria-hidden="true" tabindex="-1"></a> <span class="ex">Cgroup</span> Version: 1</span>
-<span id="cb3-17"><a href="index.html#cb3-17" aria-hidden="true" tabindex="-1"></a> <span class="ex">Plugins:</span></span>
-<span id="cb3-18"><a href="index.html#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Volume:</span> local</span>
-<span id="cb3-19"><a href="index.html#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Network:</span> bridge host ipvlan macvlan null overlay</span>
-<span id="cb3-20"><a href="index.html#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Log:</span> awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog</span>
-<span id="cb3-21"><a href="index.html#cb3-21" aria-hidden="true" tabindex="-1"></a> <span class="ex">Swarm:</span> inactive</span>
-<span id="cb3-22"><a href="index.html#cb3-22" aria-hidden="true" tabindex="-1"></a> <span class="ex">Runtimes:</span> io.containerd.runc.v2 io.containerd.runtime.v1.linux runc</span>
-<span id="cb3-23"><a href="index.html#cb3-23" aria-hidden="true" tabindex="-1"></a> <span class="ex">Default</span> Runtime: runc</span>
-<span id="cb3-24"><a href="index.html#cb3-24" aria-hidden="true" tabindex="-1"></a> <span class="ex">Init</span> Binary: docker-init</span>
-<span id="cb3-25"><a href="index.html#cb3-25" aria-hidden="true" tabindex="-1"></a> <span class="ex">containerd</span> version: 7b11cfaabd73bb80907dd23182b9347b4245eb5d</span>
-<span id="cb3-26"><a href="index.html#cb3-26" aria-hidden="true" tabindex="-1"></a> <span class="ex">runc</span> version: v1.0.2-0-g52b36a2</span>
-<span id="cb3-27"><a href="index.html#cb3-27" aria-hidden="true" tabindex="-1"></a> <span class="ex">init</span> version: de40ad0</span>
-<span id="cb3-28"><a href="index.html#cb3-28" aria-hidden="true" tabindex="-1"></a> <span class="ex">Security</span> Options:</span>
-<span id="cb3-29"><a href="index.html#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="ex">apparmor</span></span>
-<span id="cb3-30"><a href="index.html#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="ex">seccomp</span></span>
-<span id="cb3-31"><a href="index.html#cb3-31" aria-hidden="true" tabindex="-1"></a>   <span class="ex">Profile:</span> default</span>
-<span id="cb3-32"><a href="index.html#cb3-32" aria-hidden="true" tabindex="-1"></a> <span class="ex">Kernel</span> Version: 5.4.0-88-generic</span>
-<span id="cb3-33"><a href="index.html#cb3-33" aria-hidden="true" tabindex="-1"></a> <span class="ex">Operating</span> System: Ubuntu 20.04.3 LTS</span>
-<span id="cb3-34"><a href="index.html#cb3-34" aria-hidden="true" tabindex="-1"></a> <span class="ex">OSType:</span> linux</span>
-<span id="cb3-35"><a href="index.html#cb3-35" aria-hidden="true" tabindex="-1"></a> <span class="ex">Architecture:</span> x86_64</span>
-<span id="cb3-36"><a href="index.html#cb3-36" aria-hidden="true" tabindex="-1"></a> <span class="ex">CPUs:</span> 16</span>
-<span id="cb3-37"><a href="index.html#cb3-37" aria-hidden="true" tabindex="-1"></a> <span class="ex">Total</span> Memory: 62.82GiB</span>
-<span id="cb3-38"><a href="index.html#cb3-38" aria-hidden="true" tabindex="-1"></a> <span class="ex">Name:</span> machine3f9ae3dc-6a4d-46b7-8131-04f00a1be146</span>
-<span id="cb3-39"><a href="index.html#cb3-39" aria-hidden="true" tabindex="-1"></a> <span class="ex">ID:</span> XT4Y:2HUL:HXEA:CDXV:ERC7:Z7JZ:YYRU:WZBT:ERCU:6GGA:OBZ6:QLXE</span>
-<span id="cb3-40"><a href="index.html#cb3-40" aria-hidden="true" tabindex="-1"></a> <span class="ex">Docker</span> Root Dir: /mnt/docker-data</span>
-<span id="cb3-41"><a href="index.html#cb3-41" aria-hidden="true" tabindex="-1"></a> <span class="ex">Debug</span> Mode: false</span>
-<span id="cb3-42"><a href="index.html#cb3-42" aria-hidden="true" tabindex="-1"></a> <span class="ex">Registry:</span> https://index.docker.io/v1/</span>
-<span id="cb3-43"><a href="index.html#cb3-43" aria-hidden="true" tabindex="-1"></a> <span class="ex">Labels:</span></span>
-<span id="cb3-44"><a href="index.html#cb3-44" aria-hidden="true" tabindex="-1"></a> <span class="ex">Experimental:</span> false</span>
-<span id="cb3-45"><a href="index.html#cb3-45" aria-hidden="true" tabindex="-1"></a> <span class="ex">Insecure</span> Registries:</span>
-<span id="cb3-46"><a href="index.html#cb3-46" aria-hidden="true" tabindex="-1"></a>  <span class="ex">127.0.0.0/8</span></span>
-<span id="cb3-47"><a href="index.html#cb3-47" aria-hidden="true" tabindex="-1"></a> <span class="ex">Live</span> Restore Enabled: false</span></code></pre></div>
+<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Client:</span></span>
+<span id="cb3-3"><a href="index.html#cb3-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">Context:</span>    default</span>
+<span id="cb3-4"><a href="index.html#cb3-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">Debug</span> Mode: false</span>
+<span id="cb3-5"><a href="index.html#cb3-5" aria-hidden="true" tabindex="-1"></a> <span class="ex">Plugins:</span></span>
+<span id="cb3-6"><a href="index.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="ex">app:</span> Docker App <span class="er">(</span><span class="ex">Docker</span> Inc., v0.9.1-beta3<span class="kw">)</span></span>
+<span id="cb3-7"><a href="index.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">buildx:</span> Build with BuildKit <span class="er">(</span><span class="ex">Docker</span> Inc., v0.6.3-docker<span class="kw">)</span></span>
+<span id="cb3-8"><a href="index.html#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">scan:</span> Docker Scan <span class="er">(</span><span class="ex">Docker</span> Inc., v0.9.0<span class="kw">)</span></span>
+<span id="cb3-9"><a href="index.html#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="index.html#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Server:</span></span>
+<span id="cb3-11"><a href="index.html#cb3-11" aria-hidden="true" tabindex="-1"></a> <span class="ex">Containers:</span> 0</span>
+<span id="cb3-12"><a href="index.html#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Running:</span> 0</span>
+<span id="cb3-13"><a href="index.html#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Paused:</span> 0</span>
+<span id="cb3-14"><a href="index.html#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Stopped:</span> 0</span>
+<span id="cb3-15"><a href="index.html#cb3-15" aria-hidden="true" tabindex="-1"></a> <span class="ex">Images:</span> 4</span>
+<span id="cb3-16"><a href="index.html#cb3-16" aria-hidden="true" tabindex="-1"></a> <span class="ex">Server</span> Version: 20.10.11</span>
+<span id="cb3-17"><a href="index.html#cb3-17" aria-hidden="true" tabindex="-1"></a> <span class="ex">Storage</span> Driver: overlay2</span>
+<span id="cb3-18"><a href="index.html#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Backing</span> Filesystem: xfs</span>
+<span id="cb3-19"><a href="index.html#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Supports</span> d_type: true</span>
+<span id="cb3-20"><a href="index.html#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Native</span> Overlay Diff: true</span>
+<span id="cb3-21"><a href="index.html#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="ex">userxattr:</span> false</span>
+<span id="cb3-22"><a href="index.html#cb3-22" aria-hidden="true" tabindex="-1"></a> <span class="ex">Logging</span> Driver: json-file</span>
+<span id="cb3-23"><a href="index.html#cb3-23" aria-hidden="true" tabindex="-1"></a> <span class="ex">Cgroup</span> Driver: cgroupfs</span>
+<span id="cb3-24"><a href="index.html#cb3-24" aria-hidden="true" tabindex="-1"></a> <span class="ex">Cgroup</span> Version: 1</span>
+<span id="cb3-25"><a href="index.html#cb3-25" aria-hidden="true" tabindex="-1"></a> <span class="ex">Plugins:</span></span>
+<span id="cb3-26"><a href="index.html#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Volume:</span> local</span>
+<span id="cb3-27"><a href="index.html#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Network:</span> bridge host ipvlan macvlan null overlay</span>
+<span id="cb3-28"><a href="index.html#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Log:</span> awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog</span>
+<span id="cb3-29"><a href="index.html#cb3-29" aria-hidden="true" tabindex="-1"></a> <span class="ex">Swarm:</span> inactive</span>
+<span id="cb3-30"><a href="index.html#cb3-30" aria-hidden="true" tabindex="-1"></a> <span class="ex">Runtimes:</span> io.containerd.runc.v2 io.containerd.runtime.v1.linux runc</span>
+<span id="cb3-31"><a href="index.html#cb3-31" aria-hidden="true" tabindex="-1"></a> <span class="ex">Default</span> Runtime: runc</span>
+<span id="cb3-32"><a href="index.html#cb3-32" aria-hidden="true" tabindex="-1"></a> <span class="ex">Init</span> Binary: docker-init</span>
+<span id="cb3-33"><a href="index.html#cb3-33" aria-hidden="true" tabindex="-1"></a> <span class="ex">containerd</span> version: 7b11cfaabd73bb80907dd23182b9347b4245eb5d</span>
+<span id="cb3-34"><a href="index.html#cb3-34" aria-hidden="true" tabindex="-1"></a> <span class="ex">runc</span> version: v1.0.2-0-g52b36a2</span>
+<span id="cb3-35"><a href="index.html#cb3-35" aria-hidden="true" tabindex="-1"></a> <span class="ex">init</span> version: de40ad0</span>
+<span id="cb3-36"><a href="index.html#cb3-36" aria-hidden="true" tabindex="-1"></a> <span class="ex">Security</span> Options:</span>
+<span id="cb3-37"><a href="index.html#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="ex">apparmor</span></span>
+<span id="cb3-38"><a href="index.html#cb3-38" aria-hidden="true" tabindex="-1"></a>  <span class="ex">seccomp</span></span>
+<span id="cb3-39"><a href="index.html#cb3-39" aria-hidden="true" tabindex="-1"></a>   <span class="ex">Profile:</span> default</span>
+<span id="cb3-40"><a href="index.html#cb3-40" aria-hidden="true" tabindex="-1"></a> <span class="ex">Kernel</span> Version: 5.4.0-88-generic</span>
+<span id="cb3-41"><a href="index.html#cb3-41" aria-hidden="true" tabindex="-1"></a> <span class="ex">Operating</span> System: Ubuntu 20.04.3 LTS</span>
+<span id="cb3-42"><a href="index.html#cb3-42" aria-hidden="true" tabindex="-1"></a> <span class="ex">OSType:</span> linux</span>
+<span id="cb3-43"><a href="index.html#cb3-43" aria-hidden="true" tabindex="-1"></a> <span class="ex">Architecture:</span> x86_64</span>
+<span id="cb3-44"><a href="index.html#cb3-44" aria-hidden="true" tabindex="-1"></a> <span class="ex">CPUs:</span> 16</span>
+<span id="cb3-45"><a href="index.html#cb3-45" aria-hidden="true" tabindex="-1"></a> <span class="ex">Total</span> Memory: 62.82GiB</span>
+<span id="cb3-46"><a href="index.html#cb3-46" aria-hidden="true" tabindex="-1"></a> <span class="ex">Name:</span> machine3f9ae3dc-6a4d-46b7-8131-04f00a1be146</span>
+<span id="cb3-47"><a href="index.html#cb3-47" aria-hidden="true" tabindex="-1"></a> <span class="ex">ID:</span> XT4Y:2HUL:HXEA:CDXV:ERC7:Z7JZ:YYRU:WZBT:ERCU:6GGA:OBZ6:QLXE</span>
+<span id="cb3-48"><a href="index.html#cb3-48" aria-hidden="true" tabindex="-1"></a> <span class="ex">Docker</span> Root Dir: /mnt/docker-data</span>
+<span id="cb3-49"><a href="index.html#cb3-49" aria-hidden="true" tabindex="-1"></a> <span class="ex">Debug</span> Mode: false</span>
+<span id="cb3-50"><a href="index.html#cb3-50" aria-hidden="true" tabindex="-1"></a> <span class="ex">Registry:</span> https://index.docker.io/v1/</span>
+<span id="cb3-51"><a href="index.html#cb3-51" aria-hidden="true" tabindex="-1"></a> <span class="ex">Labels:</span></span>
+<span id="cb3-52"><a href="index.html#cb3-52" aria-hidden="true" tabindex="-1"></a> <span class="ex">Experimental:</span> false</span>
+<span id="cb3-53"><a href="index.html#cb3-53" aria-hidden="true" tabindex="-1"></a> <span class="ex">Insecure</span> Registries:</span>
+<span id="cb3-54"><a href="index.html#cb3-54" aria-hidden="true" tabindex="-1"></a>  <span class="ex">127.0.0.0/8</span></span>
+<span id="cb3-55"><a href="index.html#cb3-55" aria-hidden="true" tabindex="-1"></a> <span class="ex">Live</span> Restore Enabled: false</span></code></pre></div>
 
 </div>
 </div>

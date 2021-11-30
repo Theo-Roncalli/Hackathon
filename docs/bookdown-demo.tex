@@ -209,6 +209,14 @@ Detailed information about our development docker installation :
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{$}\NormalTok{ docker info}
+\ExtensionTok{Client:}
+ \ExtensionTok{Context:}\NormalTok{    default}
+ \ExtensionTok{Debug}\NormalTok{ Mode: false}
+ \ExtensionTok{Plugins:}
+  \ExtensionTok{app:}\NormalTok{ Docker App }\ErrorTok{(}\ExtensionTok{Docker}\NormalTok{ Inc., v0.9.1{-}beta3}\KeywordTok{)}
+  \ExtensionTok{buildx:}\NormalTok{ Build with BuildKit }\ErrorTok{(}\ExtensionTok{Docker}\NormalTok{ Inc., v0.6.3{-}docker}\KeywordTok{)}
+  \ExtensionTok{scan:}\NormalTok{ Docker Scan }\ErrorTok{(}\ExtensionTok{Docker}\NormalTok{ Inc., v0.9.0}\KeywordTok{)}
+
 \ExtensionTok{Server:}
  \ExtensionTok{Containers:}\NormalTok{ 0}
   \ExtensionTok{Running:}\NormalTok{ 0}
@@ -260,9 +268,6 @@ Detailed information about our development docker installation :
 
 \hypertarget{dependencies}{%
 \chapter{Dependencies}\label{dependencies}}
-
-\hypertarget{software}{%
-\section{Software}\label{software}}
 
 The pipeline runs on \href{https://www.nextflow.io/}{nextflow} a domain-specific language created to automate data-analysis pipelines whilst maximising reproducibility.
 Nextflow enables scientists to focus on their analyses, isolating different parts of the pipeline into processes whose dependencies can be dealt with using containers and virtual environments with technologies such as \href{https://www.docker.com/}{Docker}, \href{https://singularity.hpcng.org/}{Singularity}, and \href{https://www.anaconda.com/products/individual}{Anaconda}.

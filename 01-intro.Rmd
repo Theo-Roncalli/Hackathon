@@ -1,7 +1,5 @@
 # Dependencies
 
-## Software
-
 The pipeline runs on [nextflow](https://www.nextflow.io/) a domain-specific language created to automate data-analysis pipelines whilst maximising reproducibility.
 Nextflow enables scientists to focus on their analyses, isolating different parts of the pipeline into processes whose dependencies can be dealt with using containers and virtual environments with technologies such as [Docker](https://www.docker.com/), [Singularity](https://singularity.hpcng.org/), and [Anaconda](https://www.anaconda.com/products/individual).
 
